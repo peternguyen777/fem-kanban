@@ -9,7 +9,6 @@ import ToggleLightDark from "./ToggleLightDark";
 function MenuDesktop() {
   const dispatch = useDispatch();
   const currentBoard = useSelector(selectCurrentBoard);
-
   const menuOpen = useSelector(selectMenuIsVisible);
 
   const toggleMenuCloseHandler = () => {

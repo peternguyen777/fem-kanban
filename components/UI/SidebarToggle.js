@@ -1,16 +1,19 @@
 import React from "react";
-import { toggleMenu } from "../../store/uiSlice";
-import { useDispatch } from "react-redux";
+import { toggleMenu, selectToggleable } from "../../store/uiSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function SidebarToggle() {
   const dispatch = useDispatch();
+  const sidebarOn = useSelector(selectToggleable);
 
   return (
     <div
       onClick={() => {
         dispatch(toggleMenu());
       }}
-      className='absolute bottom-8 left-0 z-10 hidden h-12 w-14 cursor-pointer items-center justify-center rounded-r-full bg-purple_main transition duration-200 hover:bg-purple_hover md:grid'
+      className={`absolute bottom-8 left-0 z-10 hidden h-12 w-14 cursor-pointer items-center justify-center rounded-r-full bg-purple_main transition duration-200 hover:bg-purple_hover ${
+        sidebarOn ? `md:grid` : `hidden`
+      }`}
     >
       <svg
         width='16'
