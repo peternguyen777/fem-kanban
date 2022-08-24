@@ -26,7 +26,7 @@ export default function Home() {
         <link rel='icon' href='/assets/logo-mobile.svg' />
       </Head>
 
-      <main className='h-full overflow-scroll '>
+      <main className='h-full w-full overflow-scroll '>
         {kanbanData.boards.length === 0 && <BoardEmpty />}
 
         <div className='mx-4 mb-[70px] mt-[88px] flex space-x-6 md:mx-6 md:mt-[104px]'>
