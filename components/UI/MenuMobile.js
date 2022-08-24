@@ -35,7 +35,7 @@ export default function MobileMenu() {
           transition={{
             duration: 0.2,
           }}
-          className='fixed top-16 left-0 right-0 z-50 mx-14 mt-4 select-none rounded-[8px] bg-white pb-4 transition-colors ease-in-out dark:bg-grey_dark sm:hidden'
+          className='fixed top-16 left-0 right-0 z-50 mx-14 mt-4 select-none rounded-[8px] bg-white pb-4 transition-colors ease-in-out dark:bg-grey_dark md:hidden'
         >
           <div className='mt-4'>
             <h4 className='ml-6 mb-[19px]'>
@@ -108,7 +108,7 @@ export default function MobileMenu() {
           transition={{
             duration: 0.2,
           }}
-          className='fixed top-16 z-20 h-full w-full bg-[#000000] opacity-50 sm:hidden'
+          className='fixed top-16 z-20 h-full w-full bg-[#000000] opacity-50 md:hidden'
           onClick={toggleMenuHandler}
         ></motion.div>
       ) : null}

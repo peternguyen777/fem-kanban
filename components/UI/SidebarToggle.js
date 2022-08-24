@@ -10,7 +10,7 @@ function SidebarToggle() {
       onClick={() => {
         dispatch(toggleMenu());
       }}
-      className='absolute bottom-8 left-0 z-10 hidden h-12 w-14 cursor-pointer items-center justify-center rounded-r-full bg-purple_main transition duration-200 hover:bg-purple_hover sm:grid'
+      className='absolute bottom-8 left-0 z-10 hidden h-12 w-14 cursor-pointer items-center justify-center rounded-r-full bg-purple_main transition duration-200 hover:bg-purple_hover md:grid'
     >
       <svg
         width='16'

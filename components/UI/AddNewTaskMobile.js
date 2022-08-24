@@ -4,7 +4,7 @@ function AddNewTaskMobile({ disabled }) {
   return (
     <button
       disabled={disabled ? true : false}
-      className='grid h-8 w-12 cursor-pointer items-center justify-center rounded-full bg-purple_main disabled:opacity-25 sm:hidden'
+      className='grid h-8 w-12 cursor-pointer items-center justify-center rounded-full bg-purple_main disabled:opacity-25 md:hidden'
     >
       <svg width='12' height='12' xmlns='http://www.w3.org/2000/svg'>
         <path

@@ -7,7 +7,7 @@ function HeaderLogos() {
       <Link href='/'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
-          className='h-[25px] w-6 cursor-pointer fill-current text-[#635FC7] sm:hidden'
+          className='h-[25px] w-6 cursor-pointer fill-current text-[#635FC7] md:hidden'
         >
           <g fillRule='evenodd'>
             <rect width='6' height='25' rx='2' />
@@ -21,7 +21,7 @@ function HeaderLogos() {
           width='153'
           height='26'
           xmlns='http://www.w3.org/2000/svg'
-          className='hidden cursor-pointer sm:inline-block dark:sm:hidden'
+          className='hidden cursor-pointer md:inline-block dark:md:hidden'
         >
           <g fill='none' fillRule='evenodd'>
             <path
@@ -42,7 +42,7 @@ function HeaderLogos() {
           width='153'
           height='26'
           xmlns='http://www.w3.org/2000/svg'
-          className='hidden cursor-pointer dark:sm:inline-block'
+          className='hidden cursor-pointer dark:md:inline-block'
         >
           <g fill='none' fillRule='evenodd'>
             <path

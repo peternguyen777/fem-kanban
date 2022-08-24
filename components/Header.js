@@ -23,14 +23,14 @@ function Header() {
     <div
       className={`${
         menuOpen
-          ? `translate-x-0 sm:w-[calc(100vw_-_260px)] lg:w-[calc(100vw_-_300px)] `
-          : `sm:-translate-x-[260px] lg:-translate-x-[300px]`
-      } absolute z-10 w-screen select-none`}
+          ? `translate-x-0 md:w-[calc(100vw_-_260px)] lg:w-[calc(100vw_-_300px)] `
+          : `md:-translate-x-[260px] lg:-translate-x-[300px]`
+      } absolute z-10 w-full select-none`}
     >
-      <header className='flex h-16 items-center justify-between bg-white px-4 transition-colors dark:bg-grey_dark sm:h-[80px] sm:border-b  sm:border-lines_light sm:px-6 sm:dark:border-lines_dark'>
+      <header className='flex h-16 items-center justify-between bg-white px-4 transition-colors dark:bg-grey_dark md:h-[80px] md:border-b  md:border-lines_light md:px-6 md:dark:border-lines_dark'>
         <div className='flex h-full items-center'>
           {menuOpen ? (
-            <div className='sm:hidden'>
+            <div className='md:hidden'>
               <HeaderLogos />
             </div>
           ) : (
@@ -43,28 +43,28 @@ function Header() {
             onClick={menuToggleHandler}
             className={`flex h-full cursor-pointer items-center ${
               menuOpen
-                ? `sm:ml-0 `
-                : `sm:ml-6 sm:border-l sm:border-lines_light sm:dark:border-lines_dark`
+                ? `md:ml-0 `
+                : `md:ml-6 md:border-l md:border-lines_light md:dark:border-lines_dark`
             } `}
           >
             <h2
               className={`ml-4 mr-2 text-black dark:text-white ${
-                menuOpen ? `sm:ml-0` : `sm:ml-6`
-              } sm:text-[20px] sm:leading-[25px]`}
+                menuOpen ? `md:ml-0` : `md:ml-6`
+              } md:text-[20px] md:leading-[25px]`}
             >
               {boardData.name}
             </h2>
             {menuOpen ? (
               <svg
                 xmlns='http://www.w3.org/2000/svg'
-                className='h-[7px] w-[10px] stroke-[#635FC7] stroke-2 sm:hidden'
+                className='h-[7px] w-[10px] stroke-[#635FC7] stroke-2 md:hidden'
               >
                 <path fill='none' d='M9 6 5 2 1 6' />
               </svg>
             ) : (
               <svg
                 xmlns='http://www.w3.org/2000/svg'
-                className='h-[7px] w-[10px] stroke-[#635FC7] stroke-2 sm:hidden'
+                className='h-[7px] w-[10px] stroke-[#635FC7] stroke-2 md:hidden'
               >
                 <path fill='none' d='m1 1 4 4 4-4' />
               </svg>
@@ -76,7 +76,7 @@ function Header() {
           <AddNewTask>+ Add New Task</AddNewTask>
           <svg
             xmlns='http://www.w3.org/2000/svg'
-            className='ml-4 h-5 w-[5px] cursor-pointer fill-current text-[#828FA3] sm:ml-6'
+            className='ml-4 h-5 w-[5px] cursor-pointer fill-current text-[#828FA3] md:ml-6'
           >
             <g fillRule='evenodd'>
               <circle cx='2.308' cy='2.308' r='2.308' />

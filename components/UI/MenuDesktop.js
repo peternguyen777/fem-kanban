@@ -24,10 +24,10 @@ function MenuDesktop() {
 
   return (
     <div
-      className={`z-20 hidden h-screen select-none flex-col justify-between bg-white duration-150 ease-in-out dark:bg-grey_dark  sm:flex  ${
+      className={`z-20 hidden h-screen select-none flex-col justify-between bg-white duration-150 ease-in-out dark:bg-grey_dark  md:flex  ${
         menuOpen
-          ? `border-r border-lines_light dark:border-lines_dark sm:translate-x-0`
-          : `sm:-translate-x-full`
+          ? `border-r border-lines_light dark:border-lines_dark md:translate-x-0`
+          : `md:-translate-x-full`
       }`}
     >
       <div>
@@ -36,7 +36,7 @@ function MenuDesktop() {
             width='153'
             height='26'
             xmlns='http://www.w3.org/2000/svg'
-            className='mt-[28px] ml-6 hidden cursor-pointer sm:inline-block dark:sm:hidden'
+            className='mt-[28px] ml-6 hidden cursor-pointer md:inline-block dark:md:hidden'
           >
             <g fill='none' fillRule='evenodd'>
               <path
@@ -57,7 +57,7 @@ function MenuDesktop() {
             width='153'
             height='26'
             xmlns='http://www.w3.org/2000/svg'
-            className='mt-[28px] ml-6 hidden cursor-pointer dark:sm:inline-block '
+            className='mt-[28px] ml-6 hidden cursor-pointer dark:md:inline-block '
           >
             <g fill='none' fillRule='evenodd'>
               <path
@@ -77,14 +77,14 @@ function MenuDesktop() {
           <h4 className='ml-6 mb-[19px]'>
             ALL BOARDS ({kanbanData.boards.length})
           </h4>
-          <ul className='sm:mr-5 lg:mr-6'>
+          <ul className='md:mr-5 lg:mr-6'>
             {kanbanData.boards.map((item, i) => (
               <li
                 key={i}
                 onClick={() => {
                   toggleBoardHandler(item.id);
                 }}
-                className={`group grid h-12 cursor-pointer items-center rounded-r-full transition-colors sm:w-[240px] lg:w-[276px] ${
+                className={`group grid h-12 cursor-pointer items-center rounded-r-full transition-colors md:w-[240px] lg:w-[276px] ${
                   currentBoard === item.id
                     ? `bg-purple_main`
                     : `hover:bg-purple_main/10 hover:dark:bg-white`
