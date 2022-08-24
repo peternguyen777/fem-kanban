@@ -23,9 +23,9 @@ function Header() {
     <div
       className={`${
         menuOpen
-          ? `translate-x-0 md:w-[calc(100vw_-_260px)] lg:w-[calc(100vw_-_300px)] `
-          : `md:-translate-x-[260px] lg:-translate-x-[300px]`
-      } absolute z-10 w-full select-none`}
+          ? `translate-x-0 md:w-[calc(100vw-261px)] lg:w-[calc(100vw-301px)] `
+          : `w-full md:w-[calc(100%_+_260px)] md:-translate-x-[260px] lg:w-[calc(100%_+_300px)] lg:-translate-x-[300px]`
+      } absolute z-10 select-none`}
     >
       <header className='flex h-16 items-center justify-between bg-white px-4 transition-colors dark:bg-grey_dark md:h-[80px] md:border-b  md:border-lines_light md:px-6 md:dark:border-lines_dark'>
         <div className='flex h-full items-center'>

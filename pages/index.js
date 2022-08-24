@@ -16,9 +16,9 @@ export default function Home() {
     <div
       className={`${
         menuOpen
-          ? `translate-x-0 md:w-[calc(100vw_-_260px)] lg:w-[calc(100vw_-_300px)]`
-          : `md:-translate-x-[260px] lg:-translate-x-[300px]`
-      }   h-screen w-screen transition duration-100`}
+          ? `translate-x-0`
+          : ` md:-translate-x-[260px] lg:-translate-x-[300px]`
+      } w-full duration-150 ease-in-out md:w-[calc(100vw-261px)] lg:w-[calc(100vw-301px)]`}
     >
       <Head>
         <title>Kanban</title>
@@ -26,10 +26,10 @@ export default function Home() {
         <link rel='icon' href='/assets/logo-mobile.svg' />
       </Head>
 
-      <main className='h-full w-full overflow-scroll '>
+      <main className={`${!menuOpen && `w-screen`} h-screen overflow-scroll`}>
         {kanbanData.boards.length === 0 && <BoardEmpty />}
 
-        <div className='mx-4 mb-[70px] mt-[88px] flex space-x-6 md:mx-6 md:mt-[104px]'>
+        <div className='mx-4 mb-[70px] mt-[88px] flex w-fit space-x-6 md:mx-6 md:mt-[104px]'>
           {boardData.columns.map((item, i) => (
             <div key={i} className='w-[280px] flex-none'>
               <div className='flex'>
@@ -62,12 +62,10 @@ export default function Home() {
               </ul>
             </div>
           ))}
-          <div className='mt-[39px] h-auto w-[296px] flex-none md:w-[304px] '>
-            <div className='grid h-full w-[280px] items-center rounded-md bg-[#E9EFFA] text-center dark:bg-grey_dark'>
-              <h1 className='cursor-pointer text-grey_medium hover:text-purple_main'>
-                + New Column
-              </h1>
-            </div>
+          <div className='mt-[39px] grid h-auto w-[280px] items-center rounded-md bg-[#E9EFFA] text-center dark:bg-grey_dark'>
+            <h1 className='cursor-pointer text-grey_medium hover:text-purple_main'>
+              + New Column
+            </h1>
           </div>
         </div>
       </main>

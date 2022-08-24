@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
-
+import React from "react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { selectMenuIsVisible, toggleMenuClose } from "../../store/uiSlice";
 import { toggleBoard, selectCurrentBoard } from "../../store/boardSlice";
 import kanbanData from "../../public/data.json";
 import ToggleLightDark from "./ToggleLightDark";
-import { current } from "@reduxjs/toolkit";
 
 function MenuDesktop() {
   const dispatch = useDispatch();
@@ -24,10 +22,10 @@ function MenuDesktop() {
 
   return (
     <div
-      className={`z-20 hidden h-screen select-none flex-col justify-between bg-white duration-150 ease-in-out dark:bg-grey_dark  md:flex  ${
+      className={`z-20 hidden h-screen min-h-[500px] select-none flex-col justify-between bg-white duration-150 ease-in-out dark:bg-grey_dark md:flex ${
         menuOpen
           ? `border-r border-lines_light dark:border-lines_dark md:translate-x-0`
-          : `md:-translate-x-full`
+          : `md:-translate-x-[261px] lg:-translate-x-[301px]`
       }`}
     >
       <div>
