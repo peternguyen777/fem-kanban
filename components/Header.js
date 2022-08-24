@@ -3,16 +3,17 @@ import AddNewTaskMobile from "./UI/AddNewTaskMobile";
 import AddNewTask from "./UI/AddNewTask";
 import HeaderLogos from "./UI/HeaderLogos";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectMenuIsVisible,
-  toggleMenu,
-  toggleMenuClose,
-} from "../store/uiSlice";
-import MenuMobile from "./UI/MenuMobile";
+import { selectMenuIsVisible, toggleMenu } from "../store/uiSlice";
+import { selectCurrentBoard } from "../store/boardSlice";
+import kanbanData from "../public/data.json";
 
 function Header() {
   const dispatch = useDispatch();
   const menuOpen = useSelector(selectMenuIsVisible);
+  const currentBoardId = useSelector(selectCurrentBoard);
+  const boardData = kanbanData.boards.find(
+    (board) => board.id === currentBoardId
+  );
 
   const menuToggleHandler = () => {
     dispatch(toggleMenu());
@@ -22,9 +23,9 @@ function Header() {
     <div
       className={`${
         menuOpen
-          ? `translate-x-0`
-          : `sm:w-[calc(100%_+_260px)] sm:-translate-x-[260px] lg:w-[calc(100%_+_300px)] lg:-translate-x-[300px]`
-      } absolute z-10 w-full select-none`}
+          ? `translate-x-0 sm:w-[calc(100vw_-_260px)] lg:w-[calc(100vw_-_300px)] `
+          : `sm:-translate-x-[260px] lg:-translate-x-[300px]`
+      } absolute z-10 w-screen select-none`}
     >
       <header className='flex h-16 items-center justify-between bg-white px-4 transition-colors dark:bg-grey_dark sm:h-[80px] sm:border-b  sm:border-lines_light sm:px-6 sm:dark:border-lines_dark'>
         <div className='flex h-full items-center'>
@@ -51,7 +52,7 @@ function Header() {
                 menuOpen ? `sm:ml-0` : `sm:ml-6`
               } sm:text-[20px] sm:leading-[25px]`}
             >
-              Platform Launch
+              {boardData.name}
             </h2>
             {menuOpen ? (
               <svg

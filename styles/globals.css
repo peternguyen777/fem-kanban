@@ -4,7 +4,7 @@
 
 @layer base {
   html {
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;
     -webkit-tap-highlight-color: transparent;
   }

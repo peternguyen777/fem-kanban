@@ -17,9 +17,9 @@ export default function Home() {
     <div
       className={`${
         menuOpen
-          ? `translate-x-0`
-          : `sm:w-[calc(100%_+_260px)] sm:-translate-x-[260px] lg:w-[calc(100%_+_300px)] lg:-translate-x-[300px]`
-      }   h-screen transition duration-100`}
+          ? `translate-x-0 sm:w-[calc(100vw_-_260px)] lg:w-[calc(100vw_-_300px)]`
+          : `sm:-translate-x-[260px] lg:-translate-x-[300px]`
+      }   h-screen w-screen transition duration-100`}
     >
       <Head>
         <title>Kanban</title>
@@ -27,10 +27,11 @@ export default function Home() {
         <link rel='icon' href='/assets/logo-mobile.svg' />
       </Head>
       {/* fix overflow scroll and screen size */}
-      <main className='h-screen overflow-x-scroll overflow-y-scroll'>
+
+      <main className='h-full overflow-scroll '>
         {kanbanData.boards.length === 0 && <BoardEmpty />}
 
-        <div className='mt-[88px] ml-4 flex space-x-6 sm:mt-[104px] sm:ml-6'>
+        <div className='mx-4 mb-[70px] mt-[88px] flex space-x-6 sm:mx-6 sm:mt-[104px]'>
           {boardData.columns.map((item, i) => (
             <div key={i} className='w-[280px] flex-none'>
               <div className='flex'>
@@ -63,6 +64,13 @@ export default function Home() {
               </ul>
             </div>
           ))}
+          <div className='mt-[39px] h-auto w-[296px] flex-none sm:w-[304px] '>
+            <div className='grid h-full w-[280px] items-center rounded-md bg-[#E9EFFA] text-center dark:bg-grey_dark'>
+              <h1 className='cursor-pointer text-grey_medium hover:text-purple_main'>
+                + New Column
+              </h1>
+            </div>
+          </div>
         </div>
       </main>
     </div>
