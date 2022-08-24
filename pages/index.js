@@ -1,16 +1,34 @@
 import Head from "next/head";
 import BoardEmpty from "../components/UI/BoardEmpty";
 import kanbanData from "../public/data.json";
-import { useSelector } from "react-redux";
-import { selectMenuIsVisible } from "../store/uiSlice";
-import { selectCurrentBoard } from "../store/boardSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectMenuIsVisible, toggleViewTask } from "../store/uiSlice";
+import { selectCurrentBoard, setCurrentTask } from "../store/boardSlice";
 
 export default function Home() {
+  const dispatch = useDispatch();
   const menuOpen = useSelector(selectMenuIsVisible);
   const currentBoardId = useSelector(selectCurrentBoard);
   const boardData = kanbanData.boards.find(
     (board) => board.id === currentBoardId
   );
+  const colorScheme = [
+    "#49C4E5",
+    "#8471F2",
+    "#67E2AE",
+    "#49C4E5",
+    "#8471F2",
+    "#67E2AE",
+  ];
+
+  const viewTaskHandler = (taskTitle, columnName) => {
+    const columnData = boardData.columns.find(
+      (column) => column.name === columnName
+    );
+    const taskData = columnData.tasks.find((task) => task.title === taskTitle);
+    dispatch(setCurrentTask(taskData));
+    dispatch(toggleViewTask());
+  };
 
   return (
     <div
@@ -30,10 +48,13 @@ export default function Home() {
         {kanbanData.boards.length === 0 && <BoardEmpty />}
 
         <div className='mx-4 mb-[70px] mt-[88px] flex w-fit space-x-6 md:mx-6 md:mt-[104px]'>
-          {boardData.columns.map((item, i) => (
+          {boardData?.columns.map((item, i) => (
             <div key={i} className='w-[280px] flex-none'>
               <div className='flex'>
-                <div className='mr-3 h-[15px] w-[15px] rounded-full bg-[#49C4E5]' />
+                <div
+                  className={`bg-[${colorScheme[0]}] mr-3 h-[15px] w-[15px] rounded-full`}
+                />
+
                 <h4 className='uppercase'>
                   {item.name} ({item.tasks.length})
                 </h4>
@@ -52,7 +73,14 @@ export default function Home() {
                       key={j}
                       className='rounded-lg bg-white px-4 py-6 shadow-md dark:bg-grey_dark'
                     >
-                      <h3>{task.title}</h3>
+                      <h3
+                        onClick={() => {
+                          viewTaskHandler(task.title, item.name);
+                        }}
+                        className='cursor-pointer'
+                      >
+                        {task.title}
+                      </h3>
                       <p className='bodyM mt-2 text-grey_medium'>
                         {completedTasks} of {task.subtasks.length} subtasks
                       </p>

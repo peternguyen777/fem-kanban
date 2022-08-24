@@ -3,9 +3,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectMenuIsVisible, toggleMenuClose } from "../../store/uiSlice";
-import { selectCurrentBoard, toggleBoard } from "../../store/boardSlice";
+import { selectCurrentBoard, setCurrentBoard } from "../../store/boardSlice";
 import kanbanData from "../../public/data.json";
-import ToggleLightDark from "./ToggleLightDark";
+import ToggleLightDark from "../UI/ToggleLightDark";
 
 export default function MobileMenu() {
   const [isBrowser, setIsBrowser] = useState(false);
@@ -22,7 +22,7 @@ export default function MobileMenu() {
   };
 
   const toggleBoardHandler = (id) => {
-    dispatch(toggleBoard(id));
+    dispatch(setCurrentBoard(id));
   };
 
   const modalContent = (

@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   menuIsVisible: false,
   menuIsToggleable: true,
+  viewTaskIsVisible: false,
 };
 
 const uiSlice = createSlice({
@@ -21,13 +22,26 @@ const uiSlice = createSlice({
     toggleableFalse: (state) => {
       state.menuIsToggleable = false;
     },
+    toggleViewTask: (state) => {
+      state.viewTaskIsVisible = !state.viewTaskIsVisible;
+    },
+    toggleViewTaskClose: (state) => {
+      state.viewTaskIsVisible = false;
+    },
   },
 });
 
-export const { toggleMenu, toggleMenuClose, toggleableTrue, toggleableFalse } =
-  uiSlice.actions;
+export const {
+  toggleMenu,
+  toggleMenuClose,
+  toggleableTrue,
+  toggleableFalse,
+  toggleViewTask,
+  toggleViewTaskClose,
+} = uiSlice.actions;
 
 export const selectMenuIsVisible = (state) => state.ui.menuIsVisible;
 export const selectToggleable = (state) => state.ui.menuIsToggleable;
+export const selectViewTaskIsVisible = (state) => state.ui.viewTaskIsVisible;
 
 export default uiSlice.reducer;

@@ -19,6 +19,7 @@ class MyDocument extends Document {
         <body>
           <Main />
           <div id='mobMenu-root' />
+          <div id='viewTask-root' />
           <NextScript />
         </body>
       </Html>

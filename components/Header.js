@@ -72,7 +72,7 @@ function Header() {
                 menuOpen ? `md:ml-0` : `md:ml-6`
               } md:text-[20px] md:leading-[25px]`}
             >
-              {boardData.name}
+              {boardData?.name}
             </h2>
             {menuOpen ? (
               <svg

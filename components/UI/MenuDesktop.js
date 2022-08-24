@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { selectMenuIsVisible, toggleMenuClose } from "../../store/uiSlice";
-import { toggleBoard, selectCurrentBoard } from "../../store/boardSlice";
+import { setCurrentBoard, selectCurrentBoard } from "../../store/boardSlice";
 import kanbanData from "../../public/data.json";
 import ToggleLightDark from "./ToggleLightDark";
 
@@ -16,7 +16,7 @@ function MenuDesktop() {
   };
 
   const toggleBoardHandler = (id) => {
-    dispatch(toggleBoard(id));
+    dispatch(setCurrentBoard(id));
   };
 
   return (
