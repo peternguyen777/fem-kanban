@@ -1,5 +1,5 @@
 import React from "react";
-import { toggleMenu, selectToggleable } from "../../store/uiSlice";
+import { toggleMenuDesktop, selectToggleable } from "../../store/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 function SidebarToggle() {
@@ -9,7 +9,7 @@ function SidebarToggle() {
   return (
     <div
       onClick={() => {
-        dispatch(toggleMenu());
+        dispatch(toggleMenuDesktop());
       }}
       className={`fixed bottom-8 left-0 z-10 hidden h-12 w-14 cursor-pointer items-center justify-center rounded-r-full bg-purple_main transition duration-200 hover:bg-purple_hover ${
         sidebarOn ? `md:grid` : `hidden`

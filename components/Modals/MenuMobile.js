@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { selectMenuIsVisible, toggleMenuClose } from "../../store/uiSlice";
+import {
+  selectMenuMobileIsVisible,
+  toggleMenuMobileClose,
+} from "../../store/uiSlice";
 import { selectCurrentBoard, setCurrentBoard } from "../../store/boardSlice";
 import kanbanData from "../../public/data.json";
 import ToggleLightDark from "../UI/ToggleLightDark";
@@ -11,14 +14,14 @@ export default function MobileMenu() {
   const [isBrowser, setIsBrowser] = useState(false);
   const dispatch = useDispatch();
   const currentBoard = useSelector(selectCurrentBoard);
-  const menuOpen = useSelector(selectMenuIsVisible);
+  const menuOpen = useSelector(selectMenuMobileIsVisible);
 
   useEffect(() => {
     setIsBrowser(true);
   }, []);
 
   const toggleMenuHandler = () => {
-    dispatch(toggleMenuClose());
+    dispatch(toggleMenuMobileClose());
   };
 
   const toggleBoardHandler = (id) => {

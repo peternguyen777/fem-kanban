@@ -32,6 +32,10 @@
   p {
     @apply font-jakarta;
   }
+
+  input {
+    @apply mt-[9px] h-10 w-full rounded-lg px-6 font-jakarta text-[14px] font-bold leading-[19px] outline-none ring-1 ring-purple_main/25 placeholder:opacity-40 focus:ring-purple_main;
+  }
 }
 
 @layer components {

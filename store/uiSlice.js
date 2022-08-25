@@ -1,20 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  menuIsVisible: false,
   menuIsToggleable: true,
+  menuDesktopIsVisible: false,
+  menuMobileIsVisible: false,
   viewTaskIsVisible: false,
+  addTaskIsVisible: false,
 };
 
 const uiSlice = createSlice({
   name: "ui",
   initialState,
   reducers: {
-    toggleMenu: (state) => {
-      state.menuIsVisible = !state.menuIsVisible;
+    toggleMenuDesktop: (state) => {
+      state.menuDesktopIsVisible = !state.menuDesktopIsVisible;
     },
-    toggleMenuClose: (state) => {
-      state.menuIsVisible = false;
+    toggleMenuDesktopClose: (state) => {
+      state.menuDesktopIsVisible = false;
+    },
+    toggleMenuMobile: (state) => {
+      state.menuMobileIsVisible = !state.menuMobileIsVisible;
+    },
+    toggleMenuMobileClose: (state) => {
+      state.menuMobileIsVisible = false;
     },
     toggleableTrue: (state) => {
       state.menuIsToggleable = true;
@@ -24,24 +32,40 @@ const uiSlice = createSlice({
     },
     toggleViewTask: (state) => {
       state.viewTaskIsVisible = !state.viewTaskIsVisible;
+      state.menuMobileIsVisible = false;
     },
     toggleViewTaskClose: (state) => {
       state.viewTaskIsVisible = false;
+    },
+    toggleAddTask: (state) => {
+      state.addTaskIsVisible = !state.addTaskIsVisible;
+      state.menuMobileIsVisible = false;
+    },
+    toggleAddTaskClose: (state) => {
+      state.addTaskIsVisible = false;
     },
   },
 });
 
 export const {
-  toggleMenu,
-  toggleMenuClose,
+  toggleMenuDesktop,
+  toggleMenuDesktopClose,
+  toggleMenuMobile,
+  toggleMenuMobileClose,
   toggleableTrue,
   toggleableFalse,
   toggleViewTask,
   toggleViewTaskClose,
+  toggleAddTask,
+  toggleAddTaskClose,
 } = uiSlice.actions;
 
-export const selectMenuIsVisible = (state) => state.ui.menuIsVisible;
+export const selectMenuDesktopIsVisible = (state) =>
+  state.ui.menuDesktopIsVisible;
+export const selectMenuMobileIsVisible = (state) =>
+  state.ui.menuMobileIsVisible;
 export const selectToggleable = (state) => state.ui.menuIsToggleable;
 export const selectViewTaskIsVisible = (state) => state.ui.viewTaskIsVisible;
+export const selectAddTaskIsVisible = (state) => state.ui.addTaskIsVisible;
 
 export default uiSlice.reducer;

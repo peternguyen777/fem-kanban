@@ -1,8 +1,17 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { toggleAddTask } from "../../store/uiSlice";
 
-function AddNewTaskMobile({ disabled }) {
+function ButtonAddNewTaskMobile({ disabled }) {
+  const dispatch = useDispatch();
+
+  const addTaskHandler = () => {
+    dispatch(toggleAddTask());
+  };
+
   return (
     <button
+      onClick={addTaskHandler}
       disabled={disabled ? true : false}
       className='grid h-8 w-12 cursor-pointer items-center justify-center rounded-full bg-purple_main disabled:opacity-25 md:hidden'
     >
@@ -16,4 +25,4 @@ function AddNewTaskMobile({ disabled }) {
   );
 }
 
-export default AddNewTaskMobile;
+export default ButtonAddNewTaskMobile;

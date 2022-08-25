@@ -2,12 +2,12 @@ import Head from "next/head";
 import BoardEmpty from "../components/UI/BoardEmpty";
 import kanbanData from "../public/data.json";
 import { useSelector, useDispatch } from "react-redux";
-import { selectMenuIsVisible, toggleViewTask } from "../store/uiSlice";
+import { selectMenuDesktopIsVisible, toggleViewTask } from "../store/uiSlice";
 import { selectCurrentBoard, setCurrentTask } from "../store/boardSlice";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const menuOpen = useSelector(selectMenuIsVisible);
+  const menuDesktopOpen = useSelector(selectMenuDesktopIsVisible);
   const currentBoardId = useSelector(selectCurrentBoard);
   const boardData = kanbanData.boards.find(
     (board) => board.id === currentBoardId
@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <div
       className={`absolute h-[calc(100vh-64px)] ${
-        menuOpen && `md:w-[calc(100vw-261px)] lg:w-[calc(100vw-301px)]`
+        menuDesktopOpen && `md:w-[calc(100vw-261px)] lg:w-[calc(100vw-301px)]`
       } w-screen snap-x snap-mandatory scroll-pl-4 overflow-scroll px-4 pt-6 pb-[70px] md:h-[calc(100vh-81px)] md:scroll-pl-6 md:px-6 lg:h-[calc(100vh-97px)]`}
     >
       <Head>

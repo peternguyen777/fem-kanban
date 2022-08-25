@@ -1,37 +1,39 @@
 import React, { useEffect } from "react";
-import AddNewTaskMobile from "./UI/AddNewTaskMobile";
-import AddNewTask from "./UI/AddNewTask";
+import ButtonAddNewTaskMobile from "./UI/ButtonAddNewTaskMobile";
+import ButtonAddNewTask from "./UI/ButtonAddNewTask";
 import HeaderLogos from "./UI/HeaderLogos";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectMenuIsVisible,
+  selectMenuDesktopIsVisible,
+  selectMenuMobileIsVisible,
   selectToggleable,
-  toggleMenu,
+  toggleMenuMobile,
+  toggleMenuDesktopClose,
   toggleableTrue,
   toggleableFalse,
-  toggleMenuClose,
 } from "../store/uiSlice";
 import { selectCurrentBoard } from "../store/boardSlice";
 import kanbanData from "../public/data.json";
 
 function Header() {
   const dispatch = useDispatch();
-  const menuOpen = useSelector(selectMenuIsVisible);
+  const menuDesktopOpen = useSelector(selectMenuDesktopIsVisible);
+  const menuMobileOpen = useSelector(selectMenuMobileIsVisible);
   const sidebarOn = useSelector(selectToggleable);
   const currentBoardId = useSelector(selectCurrentBoard);
   const boardData = kanbanData.boards.find(
     (board) => board.id === currentBoardId
   );
 
-  const menuToggleHandler = () => {
-    if (sidebarOn) dispatch(toggleMenu());
+  const menuMobileToggleHandler = () => {
+    if (sidebarOn) dispatch(toggleMenuMobile());
   };
 
   useEffect(() => {
     function handleResize() {
       if (window.innerHeight < 500) {
         dispatch(toggleableFalse());
-        dispatch(toggleMenuClose());
+        dispatch(toggleMenuDesktopClose());
       } else if (window.innerHeight >= 500) {
         dispatch(toggleableTrue());
       }
@@ -42,7 +44,7 @@ function Header() {
   return (
     <header className='sticky z-10 flex h-16 select-none items-center justify-between bg-white px-4 transition-colors dark:bg-grey_dark md:h-[80px] md:border-b md:border-lines_light md:px-6 md:dark:border-lines_dark lg:h-[96px]'>
       <div className='flex h-full items-center'>
-        {menuOpen ? (
+        {menuDesktopOpen ? (
           <div className='md:hidden'>
             <HeaderLogos />
           </div>
@@ -53,21 +55,21 @@ function Header() {
         )}
 
         <div
-          onClick={menuToggleHandler}
-          className={`flex h-full cursor-pointer items-center ${
-            menuOpen
+          onClick={menuMobileToggleHandler}
+          className={`flex h-full cursor-pointer items-center md:cursor-auto ${
+            menuDesktopOpen
               ? `md:ml-0 `
               : `md:ml-6 md:border-l md:border-lines_light md:dark:border-lines_dark`
           } `}
         >
           <h2
             className={`ml-4 mr-2 text-black dark:text-white ${
-              menuOpen ? `md:ml-0` : `md:ml-6`
+              menuDesktopOpen ? `md:ml-0` : `md:ml-6`
             } md:text-[20px] md:leading-[25px]`}
           >
             {boardData?.name}
           </h2>
-          {menuOpen ? (
+          {menuMobileOpen ? (
             <svg
               xmlns='http://www.w3.org/2000/svg'
               className='h-[7px] w-[10px] stroke-[#635FC7] stroke-2 md:hidden'
@@ -85,8 +87,8 @@ function Header() {
         </div>
       </div>
       <div className='flex items-center'>
-        <AddNewTaskMobile />
-        <AddNewTask>+ Add New Task</AddNewTask>
+        <ButtonAddNewTaskMobile />
+        <ButtonAddNewTask>+ Add New Task</ButtonAddNewTask>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           className='ml-4 h-5 w-[5px] cursor-pointer fill-current text-[#828FA3] md:ml-6'

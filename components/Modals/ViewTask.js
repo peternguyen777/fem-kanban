@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import kanbanData from "../../public/data.json";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -6,13 +7,19 @@ import {
   selectViewTaskIsVisible,
   toggleViewTaskClose,
 } from "../../store/uiSlice";
-import { selectCurrentTask } from "../../store/boardSlice";
+import { selectCurrentBoard, selectCurrentTask } from "../../store/boardSlice";
+import Dropdown from "../UI/Dropdown";
 
 export default function ViewTask() {
   const [isBrowser, setIsBrowser] = useState(false);
+
   const dispatch = useDispatch();
   const viewTaskOpen = useSelector(selectViewTaskIsVisible);
   const taskData = useSelector(selectCurrentTask);
+  const currentBoardId = useSelector(selectCurrentBoard);
+  const boardData = kanbanData.boards.find(
+    (board) => board.id === currentBoardId
+  );
 
   useEffect(() => {
     setIsBrowser(true);
@@ -22,6 +29,10 @@ export default function ViewTask() {
     dispatch(toggleViewTaskClose());
   };
 
+  const setSubtaskCompleteHandler = () => {
+    //change subtask complete
+  };
+
   var completedTasks = 0;
   taskData.subtasks.filter((item) => {
     if (item.isCompleted) {
@@ -29,7 +40,6 @@ export default function ViewTask() {
     }
   });
 
-  // console.log(taskData);
   const modalContent = (
     <AnimatePresence>
       {viewTaskOpen ? (
@@ -40,25 +50,44 @@ export default function ViewTask() {
           transition={{
             duration: 0.2,
           }}
-          className='absolute top-1/2 left-0 right-0 z-50 mx-4 -translate-y-1/2 rounded-md bg-white p-6 pb-8 transition-colors ease-in-out dark:bg-grey_dark'
+          className='absolute top-1/2 left-4 right-4 z-50 mx-auto max-w-[480px] -translate-y-1/2 rounded-md bg-white p-6 pb-8 transition-colors ease-in-out dark:bg-grey_dark'
         >
           <div>
             <h2>{taskData.title}</h2>
             <p className='bodyL mt-6 text-grey_medium'>
               {taskData.description}
             </p>
-            <p className='bodyM mt-6'>
+            <p className='bodyM mt-6 text-grey_medium'>
               Subtasks ({completedTasks} of {taskData.subtasks.length})
             </p>
             <ul className='mt-4 space-y-2'>
               {taskData.subtasks.map((task, i) => (
                 <div
                   key={i}
-                  className='rounded-[4px] py-4 pl-3 pr-2 dark:bg-grey_verydark'
+                  className='flex cursor-pointer rounded-[4px] bg-grey_light py-4 pl-3 pr-2 hover:bg-purple_main/25 dark:bg-grey_verydark'
                 >
+                  <div
+                    className={`mr-4 grid h-4 w-4 flex-none items-center justify-center rounded-[2px] border ${
+                      task.isCompleted
+                        ? `border-purple_main bg-purple_main`
+                        : `border-lines_light bg-white`
+                    }`}
+                    onClick={setSubtaskCompleteHandler}
+                  >
+                    {task.isCompleted && (
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        className='h-2 w-[10px] stroke-white stroke-2'
+                      >
+                        <path fill='none' d='m1.276 3.066 2.756 2.756 5-5' />
+                      </svg>
+                    )}
+                  </div>
                   <p
-                    className={`bodyM text-grey_medium ${
-                      task.isCompleted && `line-through`
+                    className={`bodyM  ${
+                      task.isCompleted
+                        ? `text-grey_medium line-through`
+                        : `text-black`
                     }`}
                   >
                     {task.title}
@@ -66,6 +95,7 @@ export default function ViewTask() {
                 </div>
               ))}
             </ul>
+            <Dropdown taskData={taskData} boardData={boardData} />
           </div>
         </motion.div>
       ) : null}

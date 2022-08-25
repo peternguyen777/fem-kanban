@@ -8,6 +8,7 @@ import MenuMobile from "../components/Modals/MenuMobile";
 import MenuDesktop from "../components/UI/MenuDesktop";
 import SidebarToggle from "../components/UI/SidebarToggle";
 import ViewTask from "../components/Modals/ViewTask";
+import AddTask from "../components/Modals/AddTask";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -20,6 +21,7 @@ function MyApp({ Component, pageProps }) {
         {/* Portals */}
         <MenuMobile />
         <ViewTask />
+        <AddTask />
         <SidebarToggle />
 
         <div className='flex min-h-screen'>
