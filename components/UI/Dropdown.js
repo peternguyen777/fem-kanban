@@ -21,12 +21,9 @@ function Dropdown({ taskData, boardData }) {
         <button
           type='button'
           className='focus:ring-purple_medium relative h-10 w-full cursor-pointer rounded-md border border-purple_main/25 bg-white pl-4 pr-10 text-left shadow-sm focus:border-purple_main focus:outline-none focus:ring-1 '
-          ariaHaspopup='listbox'
-          ariaExpanded='true'
-          ariaLabelledby='listbox-label'
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
-          <span class='flex items-center'>
+          <span className='flex items-center'>
             <p className='bodyL truncate'>{taskData.status}</p>
           </span>
           <span className='pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-4'>
@@ -51,16 +48,12 @@ function Dropdown({ taskData, boardData }) {
         {isDropdownOpen && (
           <ul
             className='absolute z-10 mt-2 max-h-56 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'
-            tabindex='-1'
-            role='listbox'
-            ariaLabelledby='listbox-label'
-            ariaActivedescendant='listbox-option-3'
+            tabIndex='-1'
           >
-            {boardData.columns.map((status) => (
+            {boardData.columns.map((status, i) => (
               <li
                 className='relative cursor-pointer select-none py-2 pl-4'
-                id='listbox-option-0'
-                role='option'
+                key={i}
                 onClick={() => setAssignedToHandler(status.name)}
               >
                 <p className='bodyL truncate text-grey_medium'>{status.name}</p>
