@@ -17,14 +17,15 @@ function MyApp({ Component, pageProps }) {
         enableSystem={true}
         attribute='class'
       >
-        <div className='flex'>
-          <MenuDesktop />
-          <SidebarToggle />
-          <div className='relative w-full'>
-            <Header />
-            <MenuMobile />
-            <ViewTask />
+        {/* Portals */}
+        <MenuMobile />
+        <ViewTask />
+        <SidebarToggle />
 
+        <div className='flex min-h-screen'>
+          <MenuDesktop />
+          <div className='flex-1'>
+            <Header />
             <Component {...pageProps} />
           </div>
         </div>

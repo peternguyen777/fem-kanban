@@ -21,10 +21,8 @@ function MenuDesktop() {
 
   return (
     <div
-      className={`z-20 hidden h-screen min-h-[500px] select-none flex-col justify-between bg-white duration-150 ease-in-out dark:bg-grey_dark md:flex ${
-        menuOpen
-          ? `border-r border-lines_light dark:border-lines_dark md:translate-x-0`
-          : `md:-translate-x-[261px] lg:-translate-x-[301px]`
+      className={`z-20 hidden h-screen flex-none select-none flex-col justify-between overflow-hidden whitespace-nowrap border-r border-lines_light bg-white duration-150 ease-in-out dark:border-lines_dark dark:bg-grey_dark  md:flex ${
+        menuOpen ? `md:w-[260px] lg:w-[300px]` : `md:w-0`
       }`}
     >
       <div>
