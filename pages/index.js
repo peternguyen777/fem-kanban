@@ -36,7 +36,7 @@ export default function Home() {
         menuOpen
           ? `translate-x-0`
           : ` md:-translate-x-[260px] lg:-translate-x-[300px]`
-      } w-full duration-150 ease-in-out md:w-[calc(100vw-261px)] lg:w-[calc(100vw-301px)]`}
+      } w-full transition-transform duration-150 ease-in-out md:w-[calc(100vw-261px)] lg:w-[calc(100vw-301px)]`}
     >
       <Head>
         <title>Kanban</title>
@@ -44,15 +44,19 @@ export default function Home() {
         <link rel='icon' href='/assets/logo-mobile.svg' />
       </Head>
 
-      <main className={`${!menuOpen && `w-screen`} h-screen overflow-scroll`}>
-        {kanbanData.boards.length === 0 && <BoardEmpty />}
+      {kanbanData.boards.length === 0 && <BoardEmpty />}
 
-        <div className='mx-4 mb-[70px] mt-[88px] flex w-fit space-x-6 md:mx-6 md:mt-[104px]'>
-          {boardData?.columns.map((item, i) => (
-            <div key={i} className='w-[280px] flex-none'>
+      <ul
+        className={`flex h-screen snap-x snap-mandatory scroll-pl-4  px-4 pt-[88px] md:scroll-pl-6 md:px-6 md:pt-[104px] ${
+          !menuOpen && `w-screen`
+        } overflow-scroll`}
+      >
+        <div className='mb-[70px] flex h-fit space-x-6'>
+          {boardData.columns.map((item, i) => (
+            <li key={i} className=' h-fit w-[280px] flex-none snap-start'>
               <div className='flex'>
                 <div
-                  className={`bg-[${colorScheme[0]}] mr-3 h-[15px] w-[15px] rounded-full`}
+                  className={`mr-3 h-[15px] w-[15px] rounded-full bg-[#49C4E5]`}
                 />
 
                 <h4 className='uppercase'>
@@ -88,15 +92,15 @@ export default function Home() {
                   );
                 })}
               </ul>
-            </div>
+            </li>
           ))}
-          <div className='mt-[39px] grid h-auto w-[280px] items-center rounded-md bg-[#E9EFFA] text-center dark:bg-grey_dark'>
+          <li className='mt-[39px] grid h-auto w-[280px] flex-none snap-start items-center rounded-md bg-[#E9EFFA] text-center dark:bg-grey_dark'>
             <h1 className='cursor-pointer text-grey_medium hover:text-purple_main'>
               + New Column
             </h1>
-          </div>
+          </li>
         </div>
-      </main>
+      </ul>
     </div>
   );
 }
