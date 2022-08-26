@@ -50,10 +50,22 @@ export default function ViewTask() {
           transition={{
             duration: 0.2,
           }}
-          className='absolute top-1/2 left-4 right-4 z-50 mx-auto max-w-[480px] -translate-y-1/2 rounded-md bg-white p-6 pb-8 transition-colors ease-in-out dark:bg-grey_dark'
+          className='absolute top-1/2 left-4 right-4 z-50 mx-auto max-w-[480px] -translate-y-1/2 rounded-md bg-white p-6 pb-8 transition-colors ease-in-out dark:bg-grey_dark md:p-8'
         >
           <div>
-            <h2>{taskData.title}</h2>
+            <div className='flex items-center justify-between'>
+              <h2>{taskData.title}</h2>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='ml-4 h-5 w-[5px] cursor-pointer fill-current text-[#828FA3] md:ml-6'
+              >
+                <g fillRule='evenodd'>
+                  <circle cx='2.308' cy='2.308' r='2.308' />
+                  <circle cx='2.308' cy='10' r='2.308' />
+                  <circle cx='2.308' cy='17.692' r='2.308' />
+                </g>
+              </svg>
+            </div>
             <p className='bodyL mt-6 text-grey_medium'>
               {taskData.description}
             </p>

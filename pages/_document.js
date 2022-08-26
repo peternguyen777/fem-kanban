@@ -18,10 +18,11 @@ class MyDocument extends Document {
         </Head>
         <body>
           <Main />
-          <div id='addTask-root' />
-          <div id='addBoard-root' />
           <div id='mobMenu-root' />
           <div id='viewTask-root' />
+          <div id='addTask-root' />
+          <div id='editTask-root' />
+          <div id='addBoard-root' />
           <NextScript />
         </body>
       </Html>

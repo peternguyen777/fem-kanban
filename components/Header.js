@@ -24,7 +24,6 @@ function Header() {
   const boardData = kanbanData.boards.find(
     (board) => board.id === currentBoardId
   );
-  console.log(boardData.columns);
 
   const menuMobileToggleHandler = () => {
     if (sidebarOn) dispatch(toggleMenuMobile());

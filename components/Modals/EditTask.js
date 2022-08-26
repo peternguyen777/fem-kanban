@@ -4,8 +4,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  selectAddBoardIsVisible,
-  toggleAddBoardClose,
+  selectEditTaskIsVisible,
+  toggleEditTaskClose,
 } from "../../store/uiSlice";
 import { selectCurrentBoard, selectCurrentTask } from "../../store/boardSlice";
 import Dropdown from "../UI/Dropdown";
@@ -16,11 +16,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import ButtonSecondary from "../UI/ButtonSecondary";
 import ButtonPrimary from "../UI/ButtonPrimary";
 
-export default function AddBoard() {
+export default function EditTask() {
   const [isBrowser, setIsBrowser] = useState(false);
 
   const dispatch = useDispatch();
-  const addBoardOpen = useSelector(selectAddBoardIsVisible);
+  const editTaskOpen = useSelector(selectEditTaskIsVisible);
+
+  const taskData = useSelector(selectCurrentTask);
+  const currentBoardId = useSelector(selectCurrentBoard);
+  const boardData = kanbanData.boards.find(
+    (board) => board.id === currentBoardId
+  );
 
   const { register, control, handleSubmit, reset, getValues, formState } =
     useForm({
@@ -43,17 +49,24 @@ export default function AddBoard() {
     setIsBrowser(true);
   }, []);
 
-  const toggleAddBoardHandler = () => {
-    dispatch(toggleAddBoardClose());
+  const toggleAddTaskHandler = () => {
+    dispatch(toggleEditTaskClose());
   };
 
   const setSubtaskCompleteHandler = () => {
     //change subtask complete
   };
 
+  var completedTasks = 0;
+  taskData.subtasks.filter((item) => {
+    if (item.isCompleted) {
+      completedTasks++;
+    }
+  });
+
   const modalContent = (
     <AnimatePresence>
-      {addBoardOpen ? (
+      {editTaskOpen ? (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -61,26 +74,38 @@ export default function AddBoard() {
           transition={{
             duration: 0.2,
           }}
-          className='absolute top-1/2 left-4 right-4 z-50 mx-auto max-w-[480px] -translate-y-1/2 rounded-md bg-white p-6 transition-colors ease-in-out dark:bg-grey_dark md:p-8'
+          className='absolute top-1/2 left-4 right-4 z-50 mx-auto max-w-[480px] -translate-y-1/2 rounded-md bg-white p-6 pb-8 transition-colors ease-in-out dark:bg-grey_dark'
         >
           <form>
-            <h2>Add New Board</h2>
+            <h2>Edit New Task</h2>
             <div className='mt-6'>
-              <label htmlFor='name'>
-                <p className='bodyM text-grey_medium'>Name</p>
+              <label htmlFor='title'>
+                <p className='bodyM text-grey_medium'>Title</p>
               </label>
               <input
                 type='text'
-                name='name'
+                name='title'
                 className='mt-2'
-                placeholder='eg. Web Design'
+                placeholder='eg. Take coffee break'
+              />
+            </div>
+            <div className='mt-6'>
+              <label htmlFor='description'>
+                <p className='bodyM text-grey_medium'>Description</p>
+              </label>
+              <textarea
+                type='text'
+                name='desciption'
+                className='mt-2'
+                rows={3}
+                placeholder="e.g. It's always good to take a break. This 15 minute break will charge the batteries a little."
               />
             </div>
 
             <div>
               <div className='relative mt-6 flex justify-between'>
-                <label htmlFor='columns'>
-                  <p className='bodyM text-grey_medium'>Columns</p>
+                <label htmlFor='subtasks'>
+                  <p className='bodyM text-grey_medium'>Subtasks</p>
                 </label>
                 {errors.reqItems && (
                   <h6 className='hidden sm:inline-block '>
@@ -95,7 +120,7 @@ export default function AddBoard() {
                     <div key={item.id} className='mt-3 flex items-center'>
                       <input
                         {...register(`reqItems.${index}.items`)}
-                        placeholder='eg. Todo'
+                        placeholder='eg. Make coffee'
                         className='mr-4 w-full'
                       />
 
@@ -119,17 +144,17 @@ export default function AddBoard() {
 
               {/* + Add new requirement Button  */}
               <ButtonSecondary
-                onClick={(e) => {
-                  e.preventDefault();
+                onClick={() => {
                   reqAppend({ items: "" });
                 }}
               >
-                + Add New Column
+                + Add New Subtask
               </ButtonSecondary>
             </div>
 
+            <Dropdown taskData={taskData} boardData={boardData} />
             <div className='mt-6'>
-              <ButtonPrimary submit>Create New Board</ButtonPrimary>
+              <ButtonPrimary submit>Create Task</ButtonPrimary>
             </div>
           </form>
         </motion.div>
@@ -139,7 +164,7 @@ export default function AddBoard() {
 
   const underlayContent = (
     <AnimatePresence>
-      {addBoardOpen ? (
+      {editTaskOpen ? (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.5 }}
@@ -148,7 +173,7 @@ export default function AddBoard() {
             duration: 0.2,
           }}
           className='absolute top-0 z-20 h-full w-full bg-[#000000] opacity-50'
-          onClick={toggleAddBoardHandler}
+          onClick={toggleEditTaskHandler}
         ></motion.div>
       ) : null}
     </AnimatePresence>
@@ -159,11 +184,11 @@ export default function AddBoard() {
       <React.Fragment>
         {ReactDOM.createPortal(
           underlayContent,
-          document.getElementById("addBoard-root")
+          document.getElementById("editTask-root")
         )}
         {ReactDOM.createPortal(
           modalContent,
-          document.getElementById("addBoard-root")
+          document.getElementById("editTask-root")
         )}
       </React.Fragment>
     );

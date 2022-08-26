@@ -74,7 +74,7 @@ export default function AddTask() {
           transition={{
             duration: 0.2,
           }}
-          className='absolute top-1/2 left-4 right-4 z-50 mx-auto max-w-[480px] -translate-y-1/2 rounded-md bg-white p-6 pb-8 transition-colors ease-in-out dark:bg-grey_dark'
+          className='absolute top-1/2 left-4 right-4 z-50 mx-auto max-w-[480px] -translate-y-1/2 rounded-md bg-white p-6 transition-colors ease-in-out dark:bg-grey_dark md:p-8'
         >
           <form>
             <h2>Add New Task</h2>
@@ -144,8 +144,7 @@ export default function AddTask() {
 
               {/* + Add new requirement Button  */}
               <ButtonSecondary
-                onClick={(e) => {
-                  e.preventDefault();
+                onClick={() => {
                   reqAppend({ items: "" });
                 }}
               >

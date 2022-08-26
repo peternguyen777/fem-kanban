@@ -10,6 +10,7 @@ import SidebarToggle from "../components/UI/SidebarToggle";
 import ViewTask from "../components/Modals/ViewTask";
 import AddTask from "../components/Modals/AddTask";
 import AddBoard from "../components/Modals/AddBoard";
+import EditTask from "../components/Modals/EditTask";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -23,9 +24,13 @@ function MyApp({ Component, pageProps }) {
         <MenuMobile />
         <ViewTask />
         <AddTask />
+        <EditTask />
         <AddBoard />
+
+        {/* Sidebar Toggle */}
         <SidebarToggle />
 
+        {/* Main */}
         <div className='flex min-h-screen'>
           <MenuDesktop />
           <div className='flex-1'>

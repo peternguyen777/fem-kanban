@@ -6,6 +6,7 @@ const initialState = {
   menuMobileIsVisible: false,
   viewTaskIsVisible: false,
   addTaskIsVisible: false,
+  editTaskIsVisible: false,
   addBoardIsVisible: false,
 };
 
@@ -45,6 +46,13 @@ const uiSlice = createSlice({
     toggleAddTaskClose: (state) => {
       state.addTaskIsVisible = false;
     },
+    toggleEditTask: (state) => {
+      state.editTaskIsVisible = !state.editTaskIsVisible;
+      state.menuMobileIsVisible = false;
+    },
+    toggleEditTaskClose: (state) => {
+      state.editTaskIsVisible = false;
+    },
     toggleAddBoard: (state) => {
       state.addBoardIsVisible = !state.addBoardIsVisible;
       state.menuMobileIsVisible = false;
@@ -66,6 +74,8 @@ export const {
   toggleViewTaskClose,
   toggleAddTask,
   toggleAddTaskClose,
+  toggleEditTask,
+  toggleEditTaskClose,
   toggleAddBoard,
   toggleAddBoardClose,
 } = uiSlice.actions;
@@ -77,6 +87,7 @@ export const selectMenuMobileIsVisible = (state) =>
 export const selectToggleable = (state) => state.ui.menuIsToggleable;
 export const selectViewTaskIsVisible = (state) => state.ui.viewTaskIsVisible;
 export const selectAddTaskIsVisible = (state) => state.ui.addTaskIsVisible;
+export const selectEditTaskIsVisible = (state) => state.ui.editTaskIsVisible;
 export const selectAddBoardIsVisible = (state) => state.ui.addBoardIsVisible;
 
 export default uiSlice.reducer;
