@@ -34,7 +34,11 @@
   }
 
   input {
-    @apply mt-[9px] h-10 w-full rounded-lg px-6 font-jakarta text-[14px] font-bold leading-[19px] outline-none ring-1 ring-purple_main/25 placeholder:opacity-40 focus:ring-purple_main;
+    @apply bodyL h-10 w-full cursor-pointer rounded-[4px] px-4 font-jakarta outline-none ring-1 ring-grey_medium/25 placeholder:text-black/25 hover:ring-purple_main focus:text-black focus:ring-purple_main dark:bg-grey_dark dark:text-white dark:placeholder:text-white/25;
+  }
+
+  textarea {
+    @apply bodyL w-full cursor-pointer resize-none rounded-[4px] px-4 pt-2 pb-8 font-jakarta outline-none ring-1 ring-grey_medium/25 placeholder:text-black/25 hover:ring-purple_main focus:text-black focus:ring-purple_main dark:bg-grey_dark dark:text-white dark:placeholder:text-white/25;
   }
 }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import ButtonPrimary from "./ButtonPrimary";
+import ButtonPrimaryAddColumn from "./ButtonPrimaryAddColumn";
 
 function BoardEmpty() {
   return (
@@ -7,7 +7,7 @@ function BoardEmpty() {
       <h2 className='mb-6 text-center text-grey_medium'>
         This board is empty. Create a new column to get started.
       </h2>
-      <ButtonPrimary>+ Add New Column</ButtonPrimary>
+      <ButtonPrimaryAddColumn>+ Add New Column</ButtonPrimaryAddColumn>
     </div>
   );
 }

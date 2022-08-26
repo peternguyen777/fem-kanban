@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   selectMenuMobileIsVisible,
   toggleMenuMobileClose,
+  toggleAddBoard,
 } from "../../store/uiSlice";
 import { selectCurrentBoard, setCurrentBoard } from "../../store/boardSlice";
 import kanbanData from "../../public/data.json";
@@ -26,6 +27,10 @@ export default function MobileMenu() {
 
   const toggleBoardHandler = (id) => {
     dispatch(setCurrentBoard(id));
+  };
+
+  const toggleAddBoardHandler = () => {
+    dispatch(toggleAddBoard());
   };
 
   const modalContent = (
@@ -80,7 +85,10 @@ export default function MobileMenu() {
                   </div>
                 </li>
               ))}
-              <li className='group mb-4 grid h-12 w-fit cursor-pointer'>
+              <li
+                className='group mb-4 grid h-12 w-fit cursor-pointer'
+                onClick={toggleAddBoardHandler}
+              >
                 <div className='ml-8 flex items-center'>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'

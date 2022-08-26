@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   selectMenuDesktopIsVisible,
   toggleMenuDesktopClose,
+  toggleAddBoard,
 } from "../../store/uiSlice";
 import { setCurrentBoard, selectCurrentBoard } from "../../store/boardSlice";
 import kanbanData from "../../public/data.json";
@@ -20,6 +21,10 @@ function MenuDesktop() {
 
   const toggleBoardHandler = (id) => {
     dispatch(setCurrentBoard(id));
+  };
+
+  const toggleAddBoardHandler = () => {
+    dispatch(toggleAddBoard());
   };
 
   return (
@@ -111,7 +116,10 @@ function MenuDesktop() {
                 </div>
               </li>
             ))}
-            <li className='group grid h-12 w-fit cursor-pointer'>
+            <li
+              className='group grid h-12 w-fit cursor-pointer'
+              onClick={toggleAddBoardHandler}
+            >
               <div className='ml-8 flex items-center'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'

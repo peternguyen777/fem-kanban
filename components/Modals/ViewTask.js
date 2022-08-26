@@ -34,7 +34,7 @@ export default function ViewTask() {
   };
 
   var completedTasks = 0;
-  taskData.subtasks.filter((item) => {
+  taskData.subtasks.forEach((item) => {
     if (item.isCompleted) {
       completedTasks++;
     }
@@ -57,7 +57,7 @@ export default function ViewTask() {
             <p className='bodyL mt-6 text-grey_medium'>
               {taskData.description}
             </p>
-            <p className='bodyM mt-6 text-grey_medium'>
+            <p className='bodyM mt-6 text-grey_medium dark:text-white'>
               Subtasks ({completedTasks} of {taskData.subtasks.length})
             </p>
             <ul className='mt-4 space-y-2'>
@@ -70,7 +70,7 @@ export default function ViewTask() {
                     className={`mr-4 grid h-4 w-4 flex-none items-center justify-center rounded-[2px] border ${
                       task.isCompleted
                         ? `border-purple_main bg-purple_main`
-                        : `border-lines_light bg-white`
+                        : `border-lines_light bg-white dark:border-lines_dark dark:bg-grey_dark `
                     }`}
                     onClick={setSubtaskCompleteHandler}
                   >
@@ -87,7 +87,7 @@ export default function ViewTask() {
                     className={`bodyM  ${
                       task.isCompleted
                         ? `text-grey_medium line-through`
-                        : `text-black`
+                        : `text-black dark:text-white`
                     }`}
                   >
                     {task.title}

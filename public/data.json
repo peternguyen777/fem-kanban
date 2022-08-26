@@ -428,6 +428,11 @@
           "tasks": []
         }
       ]
+    },
+    {
+      "name": "Test board",
+      "id": 3,
+      "columns": []
     }
   ]
 }

@@ -13,18 +13,20 @@ function Dropdown({ taskData, boardData }) {
     <div className='mt-6'>
       <label
         id='listbox-label'
-        className='bodyM block font-jakarta text-grey_medium'
+        className='bodyM block font-jakarta text-grey_medium dark:text-white'
       >
-        Assigned to
+        Status
       </label>
       <div className='relative mt-2'>
         <button
           type='button'
-          className='focus:ring-purple_medium relative h-10 w-full cursor-pointer rounded-md border border-purple_main/25 bg-white pl-4 pr-10 text-left shadow-sm focus:border-purple_main focus:outline-none focus:ring-1 '
+          className='relative h-10 w-full cursor-pointer rounded-md border border-grey_medium/25 bg-white pl-4 pr-10 text-left shadow-sm focus:border-purple_main focus:outline-none focus:ring-1 focus:ring-purple_main dark:bg-grey_dark '
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           <span className='flex items-center'>
-            <p className='bodyL truncate'>{taskData.status}</p>
+            <p className='bodyL truncate dark:text-white'>
+              {taskData.status || boardData.columns[0].name}
+            </p>
           </span>
           <span className='pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-4'>
             {isDropdownOpen ? (

@@ -24,6 +24,7 @@ function Header() {
   const boardData = kanbanData.boards.find(
     (board) => board.id === currentBoardId
   );
+  console.log(boardData.columns);
 
   const menuMobileToggleHandler = () => {
     if (sidebarOn) dispatch(toggleMenuMobile());
@@ -67,7 +68,7 @@ function Header() {
               menuDesktopOpen ? `md:ml-0` : `md:ml-6`
             } md:text-[20px] md:leading-[25px]`}
           >
-            {boardData?.name}
+            {boardData.name}
           </h2>
           {menuMobileOpen ? (
             <svg
@@ -87,8 +88,14 @@ function Header() {
         </div>
       </div>
       <div className='flex items-center'>
-        <ButtonAddNewTaskMobile />
-        <ButtonAddNewTask>+ Add New Task</ButtonAddNewTask>
+        <ButtonAddNewTaskMobile
+          disabled={boardData.columns.length === 0 && `disabled`}
+        />
+        <ButtonAddNewTask
+          disabled={boardData.columns.length === 0 && `disabled`}
+        >
+          + Add New Task
+        </ButtonAddNewTask>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           className='ml-4 h-5 w-[5px] cursor-pointer fill-current text-[#828FA3] md:ml-6'

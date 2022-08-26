@@ -4,8 +4,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  selectAddTaskIsVisible,
-  toggleAddTaskClose,
+  selectAddBoardIsVisible,
+  toggleAddBoardClose,
 } from "../../store/uiSlice";
 import { selectCurrentBoard, selectCurrentTask } from "../../store/boardSlice";
 import Dropdown from "../UI/Dropdown";
@@ -16,17 +16,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import ButtonSecondary from "../UI/ButtonSecondary";
 import ButtonPrimary from "../UI/ButtonPrimary";
 
-export default function AddTask() {
+export default function AddBoard() {
   const [isBrowser, setIsBrowser] = useState(false);
 
   const dispatch = useDispatch();
-  const addTaskOpen = useSelector(selectAddTaskIsVisible);
-
-  const taskData = useSelector(selectCurrentTask);
-  const currentBoardId = useSelector(selectCurrentBoard);
-  const boardData = kanbanData.boards.find(
-    (board) => board.id === currentBoardId
-  );
+  const addBoardOpen = useSelector(selectAddBoardIsVisible);
 
   const { register, control, handleSubmit, reset, getValues, formState } =
     useForm({
@@ -49,24 +43,17 @@ export default function AddTask() {
     setIsBrowser(true);
   }, []);
 
-  const toggleAddTaskHandler = () => {
-    dispatch(toggleAddTaskClose());
+  const toggleAddBoardHandler = () => {
+    dispatch(toggleAddBoardClose());
   };
 
   const setSubtaskCompleteHandler = () => {
     //change subtask complete
   };
 
-  var completedTasks = 0;
-  taskData.subtasks.filter((item) => {
-    if (item.isCompleted) {
-      completedTasks++;
-    }
-  });
-
   const modalContent = (
     <AnimatePresence>
-      {addTaskOpen ? (
+      {addBoardOpen ? (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -77,35 +64,23 @@ export default function AddTask() {
           className='absolute top-1/2 left-4 right-4 z-50 mx-auto max-w-[480px] -translate-y-1/2 rounded-md bg-white p-6 pb-8 transition-colors ease-in-out dark:bg-grey_dark'
         >
           <form>
-            <h2>Add New Task</h2>
+            <h2>Add New Board</h2>
             <div className='mt-6'>
-              <label htmlFor='title'>
-                <p className='bodyM text-grey_medium'>Title</p>
+              <label htmlFor='name'>
+                <p className='bodyM text-grey_medium'>Name</p>
               </label>
               <input
                 type='text'
-                name='title'
+                name='name'
                 className='mt-2'
-                placeholder='eg. Take coffee break'
-              />
-            </div>
-            <div className='mt-6'>
-              <label htmlFor='description'>
-                <p className='bodyM text-grey_medium'>Description</p>
-              </label>
-              <textarea
-                type='text'
-                name='desciption'
-                className='mt-2'
-                rows={3}
-                placeholder="e.g. It's always good to take a break. This 15 minute break will charge the batteries a little."
+                placeholder='eg. Web Design'
               />
             </div>
 
             <div>
               <div className='relative mt-6 flex justify-between'>
-                <label htmlFor='subtasks'>
-                  <p className='bodyM text-grey_medium'>Subtasks</p>
+                <label htmlFor='columns'>
+                  <p className='bodyM text-grey_medium'>Columns</p>
                 </label>
                 {errors.reqItems && (
                   <h6 className='hidden sm:inline-block '>
@@ -120,7 +95,7 @@ export default function AddTask() {
                     <div key={item.id} className='mt-3 flex items-center'>
                       <input
                         {...register(`reqItems.${index}.items`)}
-                        placeholder='eg. Make coffee'
+                        placeholder='eg. Todo'
                         className='mr-4 w-full'
                       />
 
@@ -149,13 +124,12 @@ export default function AddTask() {
                   reqAppend({ items: "" });
                 }}
               >
-                + Add New Subtask
+                + Add New Column
               </ButtonSecondary>
             </div>
 
-            <Dropdown taskData={taskData} boardData={boardData} />
             <div className='mt-6'>
-              <ButtonPrimary submit>Create Task</ButtonPrimary>
+              <ButtonPrimary submit>Create New Board</ButtonPrimary>
             </div>
           </form>
         </motion.div>
@@ -165,7 +139,7 @@ export default function AddTask() {
 
   const underlayContent = (
     <AnimatePresence>
-      {addTaskOpen ? (
+      {addBoardOpen ? (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.5 }}
@@ -174,7 +148,7 @@ export default function AddTask() {
             duration: 0.2,
           }}
           className='absolute top-0 z-20 h-full w-full bg-[#000000] opacity-50'
-          onClick={toggleAddTaskHandler}
+          onClick={toggleAddBoardHandler}
         ></motion.div>
       ) : null}
     </AnimatePresence>
@@ -185,11 +159,11 @@ export default function AddTask() {
       <React.Fragment>
         {ReactDOM.createPortal(
           underlayContent,
-          document.getElementById("addTask-root")
+          document.getElementById("addBoard-root")
         )}
         {ReactDOM.createPortal(
           modalContent,
-          document.getElementById("addTask-root")
+          document.getElementById("addBoard-root")
         )}
       </React.Fragment>
     );
