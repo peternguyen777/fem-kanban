@@ -6,16 +6,19 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   selectViewTaskIsVisible,
   toggleViewTaskClose,
+  toggleEditTask,
+  toggleDeleteTask,
 } from "../../store/uiSlice";
 import { selectCurrentBoard, selectCurrentTask } from "../../store/boardSlice";
 import Dropdown from "../UI/Dropdown";
 
 export default function ViewTask() {
   const [isBrowser, setIsBrowser] = useState(false);
-
+  const [isDotsOpen, setIsDotsOpen] = useState(false);
+  const taskData = useSelector(selectCurrentTask);
+  const [status, setStatus] = useState();
   const dispatch = useDispatch();
   const viewTaskOpen = useSelector(selectViewTaskIsVisible);
-  const taskData = useSelector(selectCurrentTask);
   const currentBoardId = useSelector(selectCurrentBoard);
   const boardData = kanbanData.boards.find(
     (board) => board.id === currentBoardId
@@ -25,12 +28,32 @@ export default function ViewTask() {
     setIsBrowser(true);
   }, []);
 
+  useEffect(() => {
+    setStatus(taskData.status);
+  }, [taskData]);
+
   const toggleViewTaskHandler = () => {
     dispatch(toggleViewTaskClose());
+    setIsDotsOpen(false);
   };
 
   const setSubtaskCompleteHandler = () => {
     //change subtask complete
+  };
+
+  const editClickHandler = () => {
+    //set current Task,
+    //set Edit Task open
+    dispatch(toggleViewTaskClose());
+    dispatch(toggleEditTask());
+    setIsDotsOpen(false);
+  };
+
+  const deleteClickHandler = () => {
+    //delete current Task
+    dispatch(toggleDeleteTask());
+    dispatch(toggleViewTaskClose());
+    setIsDotsOpen(false);
   };
 
   var completedTasks = 0;
@@ -53,18 +76,39 @@ export default function ViewTask() {
           className='absolute top-1/2 left-4 right-4 z-50 mx-auto max-w-[480px] -translate-y-1/2 rounded-md bg-white p-6 pb-8 transition-colors ease-in-out dark:bg-grey_dark md:p-8'
         >
           <div>
-            <div className='flex items-center justify-between'>
+            <div className='relative flex items-center justify-between '>
               <h2>{taskData.title}</h2>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                className='ml-4 h-5 w-[5px] cursor-pointer fill-current text-[#828FA3] md:ml-6'
+              <div
+                className='ml-4 grid h-10 w-5 cursor-pointer items-center justify-end'
+                onClick={() => setIsDotsOpen(!isDotsOpen)}
               >
-                <g fillRule='evenodd'>
-                  <circle cx='2.308' cy='2.308' r='2.308' />
-                  <circle cx='2.308' cy='10' r='2.308' />
-                  <circle cx='2.308' cy='17.692' r='2.308' />
-                </g>
-              </svg>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  className='h-5 w-[5px] fill-current text-[#828FA3]'
+                >
+                  <g fillRule='evenodd'>
+                    <circle cx='2.308' cy='2.308' r='2.308' />
+                    <circle cx='2.308' cy='10' r='2.308' />
+                    <circle cx='2.308' cy='17.692' r='2.308' />
+                  </g>
+                </svg>
+              </div>
+              {isDotsOpen && (
+                <div className='absolute top-[calc(100%+8px)] right-0 w-[192px] select-none rounded-lg border border-lines_light bg-white shadow-lg dark:border-lines_dark dark:bg-grey_verydark'>
+                  <p
+                    className='bodyL cursor-pointer px-4 pt-4 pb-2 text-grey_medium'
+                    onClick={editClickHandler}
+                  >
+                    Edit Task
+                  </p>
+                  <p
+                    className='bodyL cursor-pointer px-4 pb-4 pt-2 text-red_main'
+                    onClick={deleteClickHandler}
+                  >
+                    Delete Task
+                  </p>
+                </div>
+              )}
             </div>
             <p className='bodyL mt-6 text-grey_medium'>
               {taskData.description}
@@ -107,7 +151,11 @@ export default function ViewTask() {
                 </div>
               ))}
             </ul>
-            <Dropdown taskData={taskData} boardData={boardData} />
+            <Dropdown
+              boardData={boardData}
+              setStatus={setStatus}
+              status={status}
+            />
           </div>
         </motion.div>
       ) : null}

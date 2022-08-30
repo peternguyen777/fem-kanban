@@ -22,7 +22,10 @@ class MyDocument extends Document {
           <div id='viewTask-root' />
           <div id='addTask-root' />
           <div id='editTask-root' />
+          <div id='deleteTask-root' />
           <div id='addBoard-root' />
+          <div id='editBoard-root' />
+          <div id='deleteBoard-root' />
           <NextScript />
         </body>
       </Html>

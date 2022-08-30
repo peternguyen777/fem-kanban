@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 
-function Dropdown({ taskData, boardData }) {
+function Dropdown({ taskData, boardData, setStatus, status }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const setAssignedToHandler = (statusName) => {
-    //change status state
     setIsDropdownOpen(false);
-    console.log(statusName);
+    setStatus(statusName);
   };
 
   return (
@@ -25,7 +24,7 @@ function Dropdown({ taskData, boardData }) {
         >
           <span className='flex items-center'>
             <p className='bodyL truncate dark:text-white'>
-              {taskData.status || boardData.columns[0].name}
+              {status || boardData.columns[0].name}
             </p>
           </span>
           <span className='pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-4'>
@@ -49,7 +48,7 @@ function Dropdown({ taskData, boardData }) {
 
         {isDropdownOpen && (
           <ul
-            className='absolute z-10 mt-2 max-h-56 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'
+            className='absolute z-10 mt-2 max-h-56 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-grey_dark '
             tabIndex='-1'
           >
             {boardData.columns.map((status, i) => (

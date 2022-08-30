@@ -1,55 +1,77 @@
 import React, { useState, useEffect } from "react";
+import kanbanData from "../../public/data.json";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  selectAddBoardIsVisible,
-  toggleAddBoardClose,
+  selectEditBoardIsVisible,
+  toggleEditBoardClose,
 } from "../../store/uiSlice";
+import { selectCurrentBoard } from "../../store/boardSlice";
 
 //reacthookform
 import { useForm, useFieldArray } from "react-hook-form";
 import ButtonSecondary from "../UI/ButtonSecondary";
 import ButtonPrimary from "../UI/ButtonPrimary";
 
-export default function AddBoard() {
+export default function EditBoard() {
   const [isBrowser, setIsBrowser] = useState(false);
-
   const dispatch = useDispatch();
-  const addBoardOpen = useSelector(selectAddBoardIsVisible);
+  const currentBoardId = useSelector(selectCurrentBoard);
+  const boardData = kanbanData.boards.find(
+    (board) => board.id === currentBoardId
+  );
 
-  const { register, control, handleSubmit, reset, formState } = useForm({
+  const editBoardOpen = useSelector(selectEditBoardIsVisible);
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    setValue,
+    resetField,
+    formState: { errors },
+  } = useForm({
     mode: "all",
     defaultValues: {
       colItems: [{ items: "" }, { items: "" }],
     },
   });
 
-  const { errors } = formState;
-
   const {
     fields: colFields,
     append: colAppend,
     remove: colRemove,
+    replace,
   } = useFieldArray({ control, name: "colItems" });
 
   useEffect(() => {
     setIsBrowser(true);
   }, []);
 
-  const toggleAddBoardHandler = () => {
-    dispatch(toggleAddBoardClose());
+  useEffect(() => {
+    setValue("name", boardData.name);
+    if (boardData.columns.length !== 0) {
+      const colItemsArr = boardData.columns.map((col) => ({ items: col.name }));
+      console.log(colItemsArr);
+      replace(colItemsArr);
+    } else {
+      resetField("colItems");
+    }
+  }, [currentBoardId]);
+
+  const toggleEditBoardHandler = () => {
+    dispatch(toggleEditBoardClose());
   };
 
   const onSubmit = (data) => {
     data.colItems = data.colItems.filter((str) => str.items.trim() !== "");
-    reset();
-    dispatch(toggleAddBoardClose());
+    dispatch(toggleEditBoardClose());
   };
 
   const modalContent = (
     <AnimatePresence>
-      {addBoardOpen ? (
+      {editBoardOpen ? (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -60,7 +82,7 @@ export default function AddBoard() {
           className='absolute top-1/2 left-4 right-4 z-50 mx-auto max-w-[480px] -translate-y-1/2 rounded-md bg-white p-6 transition-colors ease-in-out dark:bg-grey_dark md:p-8'
         >
           <form onSubmit={handleSubmit(onSubmit)}>
-            <h2>Add New Board</h2>
+            <h2>Edit Board</h2>
             <div className='mt-6'>
               <label htmlFor='name'>
                 <p className='bodyM text-grey_medium'>Name</p>
@@ -131,7 +153,7 @@ export default function AddBoard() {
             </div>
 
             <div className='mt-6'>
-              <ButtonPrimary submit>Create New Board</ButtonPrimary>
+              <ButtonPrimary submit>Save Changes</ButtonPrimary>
             </div>
           </form>
         </motion.div>
@@ -141,7 +163,7 @@ export default function AddBoard() {
 
   const underlayContent = (
     <AnimatePresence>
-      {addBoardOpen ? (
+      {editBoardOpen ? (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.5 }}
@@ -150,7 +172,7 @@ export default function AddBoard() {
             duration: 0.2,
           }}
           className='absolute top-0 z-20 h-full w-full bg-[#000000] opacity-50'
-          onClick={toggleAddBoardHandler}
+          onClick={toggleEditBoardHandler}
         ></motion.div>
       ) : null}
     </AnimatePresence>
@@ -161,11 +183,11 @@ export default function AddBoard() {
       <React.Fragment>
         {ReactDOM.createPortal(
           underlayContent,
-          document.getElementById("addBoard-root")
+          document.getElementById("editBoard-root")
         )}
         {ReactDOM.createPortal(
           modalContent,
-          document.getElementById("addBoard-root")
+          document.getElementById("editBoard-root")
         )}
       </React.Fragment>
     );

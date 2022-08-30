@@ -11,6 +11,9 @@ import ViewTask from "../components/Modals/ViewTask";
 import AddTask from "../components/Modals/AddTask";
 import AddBoard from "../components/Modals/AddBoard";
 import EditTask from "../components/Modals/EditTask";
+import EditBoard from "../components/Modals/EditBoard";
+import DeleteTask from "../components/Modals/DeleteTask";
+import DeleteBoard from "../components/Modals/DeleteBoard";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -25,7 +28,10 @@ function MyApp({ Component, pageProps }) {
         <ViewTask />
         <AddTask />
         <EditTask />
+        <DeleteTask />
         <AddBoard />
+        <EditBoard />
+        <DeleteBoard />
 
         {/* Sidebar Toggle */}
         <SidebarToggle />

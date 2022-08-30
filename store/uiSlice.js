@@ -7,7 +7,10 @@ const initialState = {
   viewTaskIsVisible: false,
   addTaskIsVisible: false,
   editTaskIsVisible: false,
+  deleteTaskIsVisible: false,
   addBoardIsVisible: false,
+  editBoardIsVisible: false,
+  deleteBoardIsVisible: false,
 };
 
 const uiSlice = createSlice({
@@ -53,12 +56,33 @@ const uiSlice = createSlice({
     toggleEditTaskClose: (state) => {
       state.editTaskIsVisible = false;
     },
+    toggleDeleteTask: (state) => {
+      state.deleteTaskIsVisible = !state.deleteTaskIsVisible;
+      state.menuMobileIsVisible = false;
+    },
+    toggleDeleteTaskClose: (state) => {
+      state.deleteTaskIsVisible = false;
+    },
     toggleAddBoard: (state) => {
       state.addBoardIsVisible = !state.addBoardIsVisible;
       state.menuMobileIsVisible = false;
     },
     toggleAddBoardClose: (state) => {
       state.addBoardIsVisible = false;
+    },
+    toggleEditBoard: (state) => {
+      state.editBoardIsVisible = !state.editBoardIsVisible;
+      state.menuMobileIsVisible = false;
+    },
+    toggleEditBoardClose: (state) => {
+      state.editBoardIsVisible = false;
+    },
+    toggleDeleteBoard: (state) => {
+      state.deleteBoardIsVisible = !state.deleteBoardIsVisible;
+      state.menuMobileIsVisible = false;
+    },
+    toggleDeleteBoardClose: (state) => {
+      state.deleteBoardIsVisible = false;
     },
   },
 });
@@ -76,8 +100,14 @@ export const {
   toggleAddTaskClose,
   toggleEditTask,
   toggleEditTaskClose,
+  toggleDeleteTask,
+  toggleDeleteTaskClose,
   toggleAddBoard,
   toggleAddBoardClose,
+  toggleEditBoard,
+  toggleEditBoardClose,
+  toggleDeleteBoard,
+  toggleDeleteBoardClose,
 } = uiSlice.actions;
 
 export const selectMenuDesktopIsVisible = (state) =>
@@ -88,6 +118,11 @@ export const selectToggleable = (state) => state.ui.menuIsToggleable;
 export const selectViewTaskIsVisible = (state) => state.ui.viewTaskIsVisible;
 export const selectAddTaskIsVisible = (state) => state.ui.addTaskIsVisible;
 export const selectEditTaskIsVisible = (state) => state.ui.editTaskIsVisible;
+export const selectDeleteTaskIsVisible = (state) =>
+  state.ui.deleteTaskIsVisible;
 export const selectAddBoardIsVisible = (state) => state.ui.addBoardIsVisible;
+export const selectEditBoardIsVisible = (state) => state.ui.editBoardIsVisible;
+export const selectDeleteBoardIsVisible = (state) =>
+  state.ui.deleteBoardIsVisible;
 
 export default uiSlice.reducer;

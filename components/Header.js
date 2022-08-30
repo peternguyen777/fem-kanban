@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ButtonAddNewTaskMobile from "./UI/ButtonAddNewTaskMobile";
 import ButtonAddNewTask from "./UI/ButtonAddNewTask";
 import HeaderLogos from "./UI/HeaderLogos";
@@ -11,11 +11,14 @@ import {
   toggleMenuDesktopClose,
   toggleableTrue,
   toggleableFalse,
+  toggleEditBoard,
+  toggleDeleteBoard,
 } from "../store/uiSlice";
 import { selectCurrentBoard } from "../store/boardSlice";
 import kanbanData from "../public/data.json";
 
 function Header() {
+  const [isDotsOpen, setIsDotsOpen] = useState(false);
   const dispatch = useDispatch();
   const menuDesktopOpen = useSelector(selectMenuDesktopIsVisible);
   const menuMobileOpen = useSelector(selectMenuMobileIsVisible);
@@ -40,6 +43,16 @@ function Header() {
     }
     window.addEventListener("resize", handleResize);
   });
+
+  const editClickHandler = () => {
+    setIsDotsOpen(false);
+    dispatch(toggleEditBoard());
+  };
+
+  const deleteClickHandler = () => {
+    setIsDotsOpen(false);
+    dispatch(toggleDeleteBoard());
+  };
 
   return (
     <header className='sticky z-10 flex h-16 select-none items-center justify-between bg-white px-4 transition-colors dark:bg-grey_dark md:h-[80px] md:border-b md:border-lines_light md:px-6 md:dark:border-lines_dark lg:h-[96px]'>
@@ -86,7 +99,7 @@ function Header() {
           )}
         </div>
       </div>
-      <div className='flex items-center'>
+      <div className='relative flex items-center '>
         <ButtonAddNewTaskMobile
           disabled={boardData.columns.length === 0 && `disabled`}
         />
@@ -95,16 +108,37 @@ function Header() {
         >
           + Add New Task
         </ButtonAddNewTask>
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          className='ml-4 h-5 w-[5px] cursor-pointer fill-current text-[#828FA3] md:ml-6'
+        <div
+          className='grid h-10 w-5 cursor-pointer items-center justify-end md:w-7'
+          onClick={() => setIsDotsOpen(!isDotsOpen)}
         >
-          <g fillRule='evenodd'>
-            <circle cx='2.308' cy='2.308' r='2.308' />
-            <circle cx='2.308' cy='10' r='2.308' />
-            <circle cx='2.308' cy='17.692' r='2.308' />
-          </g>
-        </svg>
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            className='h-5 w-[5px] fill-current text-[#828FA3]'
+          >
+            <g fillRule='evenodd'>
+              <circle cx='2.308' cy='2.308' r='2.308' />
+              <circle cx='2.308' cy='10' r='2.308' />
+              <circle cx='2.308' cy='17.692' r='2.308' />
+            </g>
+          </svg>
+        </div>
+        {isDotsOpen && (
+          <div className='absolute top-[calc(100%+8px)] right-0 w-[192px] select-none rounded-lg border border-lines_light bg-white shadow-lg dark:border-lines_dark dark:bg-grey_verydark'>
+            <p
+              className='bodyL cursor-pointer px-4 pt-4 pb-2 text-grey_medium'
+              onClick={editClickHandler}
+            >
+              Edit Board
+            </p>
+            <p
+              className='bodyL cursor-pointer px-4 pb-4 pt-2 text-red_main'
+              onClick={deleteClickHandler}
+            >
+              Delete Board
+            </p>
+          </div>
+        )}
       </div>
     </header>
   );

@@ -2,7 +2,11 @@ import Head from "next/head";
 import BoardEmpty from "../components/UI/BoardEmpty";
 import kanbanData from "../public/data.json";
 import { useSelector, useDispatch } from "react-redux";
-import { selectMenuDesktopIsVisible, toggleViewTask } from "../store/uiSlice";
+import {
+  selectMenuDesktopIsVisible,
+  toggleViewTask,
+  toggleEditBoard,
+} from "../store/uiSlice";
 import { selectCurrentBoard, setCurrentTask } from "../store/boardSlice";
 
 export default function Home() {
@@ -28,6 +32,10 @@ export default function Home() {
     const taskData = columnData.tasks.find((task) => task.title === taskTitle);
     dispatch(setCurrentTask(taskData));
     dispatch(toggleViewTask());
+  };
+
+  const editBoardHandler = () => {
+    dispatch(toggleEditBoard());
   };
 
   return (
@@ -89,8 +97,11 @@ export default function Home() {
             </div>
           ))}
           <div className='mt-[39px] h-auto w-[296px] flex-none snap-start md:w-[304px] '>
-            <div className='grid h-full w-[280px] items-center rounded-md bg-[#E9EFFA] text-center dark:bg-grey_dark'>
-              <h1 className='cursor-pointer text-grey_medium hover:text-purple_main'>
+            <div
+              className='grid h-full w-[280px] cursor-pointer items-center rounded-md bg-[#E9EFFA] text-center dark:bg-grey_dark'
+              onClick={editBoardHandler}
+            >
+              <h1 className='select-none text-grey_medium hover:text-purple_main'>
                 + New Column
               </h1>
             </div>
