@@ -53,7 +53,6 @@ export default function EditBoard() {
     setValue("name", boardData.name);
     if (boardData.columns.length !== 0) {
       const colItemsArr = boardData.columns.map((col) => ({ items: col.name }));
-      console.log(colItemsArr);
       replace(colItemsArr);
     } else {
       resetField("colItems");

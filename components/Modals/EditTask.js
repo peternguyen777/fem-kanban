@@ -62,13 +62,9 @@ export default function EditTask() {
     setStatus(taskData.status);
     const subtaskArr = taskData.subtasks.map((task) => ({ task: task.title }));
     replace(subtaskArr);
-  }, [taskData, reset]);
+  }, [taskData]);
 
   const toggleEditTaskCloseHandler = () => {
-    //reset react-hook-form fields & Dropdown custom component (Status)
-    reset();
-    setStatus(boardData.columns[0].name);
-
     //close the modal
     dispatch(toggleEditTaskClose());
   };
