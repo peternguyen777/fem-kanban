@@ -46,8 +46,9 @@ export default function EditBoard() {
         >
           <h2 className='text-red_main'>Delete this board?</h2>
           <p className='bodyL mt-6 text-grey_medium'>
-            Are you sure you want to delete the '{boardData.name}' board? This
-            action will remove all columns and tasks and cannot be reversed.
+            Are you sure you want to delete the &apos;{boardData.name}&apos;
+            board? This action will remove all columns and tasks and cannot be
+            reversed.
           </p>
 
           <div className='mt-6 space-y-4 md:flex md:space-x-4 md:space-y-0'>

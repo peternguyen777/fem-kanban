@@ -23,7 +23,7 @@ export default function AddTask() {
     (board) => board.id === currentBoardId
   );
   const [isBrowser, setIsBrowser] = useState(false);
-  const [status, setStatus] = useState(boardData.columns[0]?.name);
+  const [status, setStatus] = useState(boardData?.columns[0]?.name);
 
   const dispatch = useDispatch();
   const addTaskOpen = useSelector(selectAddTaskIsVisible);

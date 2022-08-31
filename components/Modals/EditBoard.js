@@ -50,8 +50,8 @@ export default function EditBoard() {
   }, []);
 
   useEffect(() => {
-    setValue("name", boardData.name);
-    if (boardData.columns.length !== 0) {
+    setValue("name", boardData?.name);
+    if (boardData?.columns.length !== 0) {
       const colItemsArr = boardData.columns.map((col) => ({ items: col.name }));
       replace(colItemsArr);
     } else {

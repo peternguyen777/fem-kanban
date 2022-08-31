@@ -2,16 +2,29 @@ import Head from "next/head";
 import BoardEmpty from "../components/UI/BoardEmpty";
 import kanbanData from "../public/data.json";
 import { useSelector, useDispatch } from "react-redux";
-import { selectMenuIsVisible, toggleViewTask } from "../store/uiSlice";
+import {
+  selectMenuDesktopIsVisible,
+  toggleViewTask,
+  toggleEditBoard,
+} from "../store/uiSlice";
 import { selectCurrentBoard, setCurrentTask } from "../store/boardSlice";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const menuOpen = useSelector(selectMenuIsVisible);
+  const menuDesktopOpen = useSelector(selectMenuDesktopIsVisible);
   const currentBoardId = useSelector(selectCurrentBoard);
   const boardData = kanbanData.boards.find(
     (board) => board.id === currentBoardId
   );
+  // const colorScheme = [
+  //   "#49C4E5",
+  //   "#8471F2",
+  //   "#67E2AE",
+  //   "#49C4E5",
+  //   "#8471F2",
+  //   "#67E2AE",
+  // ];
 
   const viewTaskHandler = (taskTitle, columnName) => {
     const columnData = boardData.columns.find(
@@ -22,13 +35,15 @@ export default function Home() {
     dispatch(toggleViewTask());
   };
 
+  const editBoardHandler = () => {
+    dispatch(toggleEditBoard());
+  };
+
   return (
     <div
-      className={`${
-        menuOpen
-          ? `translate-x-0 md:w-[calc(100vw-261px)] lg:w-[calc(100vw-301px)] `
-          : ` md:-translate-x-[260px] lg:-translate-x-[300px]`
-      } w-screen select-none transition-transform duration-150`}
+      className={`absolute h-[calc(100vh-64px)] ${
+        menuDesktopOpen && `md:w-[calc(100vw-261px)] lg:w-[calc(100vw-301px)]`
+      } w-screen snap-x snap-mandatory scroll-pl-4 overflow-scroll px-4 pt-6 pb-[70px] md:h-[calc(100vh-81px)] md:scroll-pl-6 md:px-6 lg:h-[calc(100vh-97px)]`}
     >
       <Head>
         <title>Kanban</title>
@@ -36,14 +51,12 @@ export default function Home() {
         <link rel='icon' href='/assets/logo-mobile.svg' />
       </Head>
 
-      {kanbanData.boards.length === 0 && <BoardEmpty />}
-
-      <ul
-        className={`mt-[64px] flex h-auto snap-x snap-mandatory scroll-pl-4 overflow-scroll px-4  pt-6 md:mt-[81px] md:scroll-pl-6 md:px-6 md:pt-[23px] lg:mt-[97px]`}
-      >
-        <div className='mb-[70px] flex space-x-6'>
+      {boardData.columns.length === 0 ? (
+        <BoardEmpty />
+      ) : (
+        <div className='flex space-x-6 '>
           {boardData.columns.map((item, i) => (
-            <li key={i} className=' w-[280px] flex-none snap-start'>
+            <div key={i} className=' w-[280px] flex-none snap-start'>
               <div className='flex'>
                 <div
                   className={`mr-3 h-[15px] w-[15px] rounded-full bg-[#49C4E5]`}
@@ -56,7 +69,7 @@ export default function Home() {
               <ul className='mt-6 space-y-5'>
                 {item.tasks.map((task, j) => {
                   var completedTasks = 0;
-                  task.subtasks.filter((item) => {
+                  task.subtasks.forEach((item) => {
                     if (item.isCompleted) {
                       completedTasks++;
                     }
@@ -82,15 +95,20 @@ export default function Home() {
                   );
                 })}
               </ul>
-            </li>
+            </div>
           ))}
-          <li className='mt-[39px] grid h-auto w-[280px] flex-none snap-start items-center rounded-md bg-[#E9EFFA] text-center dark:bg-grey_dark'>
-            <h1 className='cursor-pointer text-grey_medium hover:text-purple_main'>
-              + New Column
-            </h1>
-          </li>
+          <div className='mt-[39px] h-auto w-[296px] flex-none snap-start md:w-[304px] '>
+            <div
+              className='grid h-full w-[280px] cursor-pointer items-center rounded-md bg-[#E9EFFA] text-center dark:bg-grey_dark'
+              onClick={editBoardHandler}
+            >
+              <h1 className='select-none text-grey_medium hover:text-purple_main'>
+                + New Column
+              </h1>
+            </div>
+          </div>
         </div>
-      </ul>
+      )}
     </div>
   );
 }

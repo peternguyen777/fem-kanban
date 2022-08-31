@@ -1,30 +1,32 @@
+//Next JSX
+import { useEffect } from "react";
 import Head from "next/head";
-import BoardEmpty from "../components/UI/BoardEmpty";
-import kanbanData from "../public/data.json";
+import BoardEmpty from "../../components/UI/BoardEmpty";
+
+//redux
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectMenuDesktopIsVisible,
   toggleViewTask,
   toggleEditBoard,
-} from "../store/uiSlice";
-import { selectCurrentBoard, setCurrentTask } from "../store/boardSlice";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+} from "../../store/uiSlice";
+import {
+  setAllBoardData,
+  setBoardData,
+  setCurrentTask,
+} from "../../store/boardSlice";
 
-export default function Home() {
+//db connection
+import { connectToDatabase } from "../../util/mongodb";
+
+export default function Home({ boardData, allBoardData }) {
   const dispatch = useDispatch();
   const menuDesktopOpen = useSelector(selectMenuDesktopIsVisible);
-  const currentBoardId = useSelector(selectCurrentBoard);
-  const boardData = kanbanData.boards.find(
-    (board) => board.id === currentBoardId
-  );
-  // const colorScheme = [
-  //   "#49C4E5",
-  //   "#8471F2",
-  //   "#67E2AE",
-  //   "#49C4E5",
-  //   "#8471F2",
-  //   "#67E2AE",
-  // ];
+
+  useEffect(() => {
+    dispatch(setBoardData(boardData));
+    dispatch(setAllBoardData(allBoardData));
+  }, [boardData]);
 
   const viewTaskHandler = (taskTitle, columnName) => {
     const columnData = boardData.columns.find(
@@ -59,15 +61,15 @@ export default function Home() {
             <div key={i} className=' w-[280px] flex-none snap-start'>
               <div className='flex'>
                 <div
-                  className={`mr-3 h-[15px] w-[15px] rounded-full bg-[#49C4E5]`}
+                  className={`mr-3 h-[15px] w-[15px] rounded-full bg-[${item?.color}]`}
                 />
 
                 <h4 className='uppercase'>
-                  {item.name} ({item.tasks.length})
+                  {item.name} ({item.tasks?.length})
                 </h4>
               </div>
               <ul className='mt-6 space-y-5'>
-                {item.tasks.map((task, j) => {
+                {item.tasks?.map((task, j) => {
                   var completedTasks = 0;
                   task.subtasks.forEach((item) => {
                     if (item.isCompleted) {
@@ -107,4 +109,27 @@ export default function Home() {
       )}
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const { db } = await connectToDatabase();
+
+  const data = await db
+    .collection("public")
+    .findOne({ slug: context.query.board });
+
+  const allBoards = await db
+    .collection("public")
+    .find({})
+    .sort({ name: 1 })
+    .project({ _id: 1, name: 1, slug: 1 })
+    .toArray();
+
+  const boardData = JSON.parse(JSON.stringify(data));
+
+  const allBoardData = JSON.parse(JSON.stringify(allBoards));
+
+  return {
+    props: { boardData, allBoardData },
+  };
 }

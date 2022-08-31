@@ -40,8 +40,8 @@ export default function EditBoard() {
         >
           <h2 className='text-red_main'>Delete this task?</h2>
           <p className='bodyL mt-6 text-grey_medium'>
-            Are you sure you want to delete the '{currentTask.title}' task and
-            its subtasks? This action cannot be reversed.
+            Are you sure you want to delete the &apos;{currentTask.title}&apos;
+            task and its subtasks? This action cannot be reversed.
           </p>
 
           <div className='mt-6 space-y-4 md:flex md:space-x-4 md:space-y-0'>

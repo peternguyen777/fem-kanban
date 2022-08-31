@@ -14,8 +14,7 @@ import {
   toggleEditBoard,
   toggleDeleteBoard,
 } from "../store/uiSlice";
-import { selectCurrentBoard } from "../store/boardSlice";
-import kanbanData from "../public/data.json";
+import { selectBoardData } from "../store/boardSlice";
 
 function Header() {
   const [isDotsOpen, setIsDotsOpen] = useState(false);
@@ -23,10 +22,8 @@ function Header() {
   const menuDesktopOpen = useSelector(selectMenuDesktopIsVisible);
   const menuMobileOpen = useSelector(selectMenuMobileIsVisible);
   const sidebarOn = useSelector(selectToggleable);
-  const currentBoardId = useSelector(selectCurrentBoard);
-  const boardData = kanbanData.boards.find(
-    (board) => board.id === currentBoardId
-  );
+
+  const boardData = useSelector(selectBoardData);
 
   const menuMobileToggleHandler = () => {
     if (sidebarOn) dispatch(toggleMenuMobile());
@@ -101,10 +98,10 @@ function Header() {
       </div>
       <div className='relative flex items-center '>
         <ButtonAddNewTaskMobile
-          disabled={boardData.columns.length === 0 && `disabled`}
+          disabled={boardData.columns?.length === 0 && `disabled`}
         />
         <ButtonAddNewTask
-          disabled={boardData.columns.length === 0 && `disabled`}
+          disabled={boardData.columns?.length === 0 && `disabled`}
         >
           + Add New Task
         </ButtonAddNewTask>

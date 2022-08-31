@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import kanbanData from "../../public/data.json";
+// import kanbanData from "../../public/data.json";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,20 +9,17 @@ import {
   toggleEditTask,
   toggleDeleteTask,
 } from "../../store/uiSlice";
-import { selectCurrentBoard, selectCurrentTask } from "../../store/boardSlice";
+import { selectBoardData, selectCurrentTask } from "../../store/boardSlice";
 import Dropdown from "../UI/Dropdown";
 
 export default function ViewTask() {
+  const dispatch = useDispatch();
   const [isBrowser, setIsBrowser] = useState(false);
   const [isDotsOpen, setIsDotsOpen] = useState(false);
   const taskData = useSelector(selectCurrentTask);
   const [status, setStatus] = useState();
-  const dispatch = useDispatch();
   const viewTaskOpen = useSelector(selectViewTaskIsVisible);
-  const currentBoardId = useSelector(selectCurrentBoard);
-  const boardData = kanbanData.boards.find(
-    (board) => board.id === currentBoardId
-  );
+  const boardData = useSelector(selectBoardData);
 
   useEffect(() => {
     setIsBrowser(true);
@@ -57,7 +54,7 @@ export default function ViewTask() {
   };
 
   var completedTasks = 0;
-  taskData.subtasks.forEach((item) => {
+  taskData.subtasks?.forEach((item) => {
     if (item.isCompleted) {
       completedTasks++;
     }

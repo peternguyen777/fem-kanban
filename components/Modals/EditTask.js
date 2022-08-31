@@ -60,7 +60,7 @@ export default function EditTask() {
     setValue("title", taskData.title);
     setValue("description", taskData.description);
     setStatus(taskData.status);
-    const subtaskArr = taskData.subtasks.map((task) => ({ task: task.title }));
+    const subtaskArr = taskData.subtasks?.map((task) => ({ task: task.title }));
     replace(subtaskArr);
   }, [taskData]);
 

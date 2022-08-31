@@ -21,7 +21,7 @@ export default function AddBoard() {
   const { register, control, handleSubmit, reset, formState } = useForm({
     mode: "all",
     defaultValues: {
-      colItems: [{ items: "" }, { items: "" }],
+      columns: [{ name: "" }, { name: "" }],
     },
   });
 
@@ -31,7 +31,7 @@ export default function AddBoard() {
     fields: colFields,
     append: colAppend,
     remove: colRemove,
-  } = useFieldArray({ control, name: "colItems" });
+  } = useFieldArray({ control, name: "columns" });
 
   useEffect(() => {
     setIsBrowser(true);
@@ -41,10 +41,20 @@ export default function AddBoard() {
     dispatch(toggleAddBoardClose());
   };
 
-  const onSubmit = (data) => {
-    data.colItems = data.colItems.filter((str) => str.items.trim() !== "");
+  const onSubmit = async (data) => {
+    data.columns = data.columns.filter((str) => str.name.trim() !== "");
     reset();
     dispatch(toggleAddBoardClose());
+
+    const response = await fetch("/api/board/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ createBoard: data }),
+    });
+    const resData = await response.json();
+    return resData.createBoard;
   };
 
   const modalContent = (
@@ -96,7 +106,7 @@ export default function AddBoard() {
                   return (
                     <div key={item.id} className='mt-3 flex items-center'>
                       <input
-                        {...register(`colItems.${index}.items`)}
+                        {...register(`columns.${index}.name`)}
                         placeholder='eg. Todo'
                         className='mr-4 w-full ring-grey_medium/25'
                       />
@@ -123,7 +133,7 @@ export default function AddBoard() {
               <ButtonSecondary
                 onClick={(e) => {
                   e.preventDefault();
-                  colAppend({ items: "" });
+                  colAppend({ name: "" });
                 }}
               >
                 + Add New Column

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   menuIsToggleable: true,
-  menuDesktopIsVisible: false,
+  menuDesktopIsVisible: true,
   menuMobileIsVisible: false,
   viewTaskIsVisible: false,
   addTaskIsVisible: false,
