@@ -14,7 +14,6 @@ import {
 import { setCurrentTask } from "../../store/boardSlice";
 
 //react-query
-
 import { useCurrentBoard } from "../../hooks/useCurrentBoard";
 
 export default function Home() {
@@ -61,7 +60,8 @@ export default function Home() {
             <div key={i} className=' w-[280px] flex-none snap-start'>
               <div className='flex'>
                 <div
-                  className={`mr-3 h-[15px] w-[15px] rounded-full bg-[${item?.color}]`}
+                  className={`mr-3 h-[15px] w-[15px] rounded-full`}
+                  style={{ backgroundColor: item.color }}
                 />
 
                 <h4 className='uppercase'>
