@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import kanbanData from "../../public/data.json";
+import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,26 +7,34 @@ import {
   selectDeleteBoardIsVisible,
   toggleDeleteBoardClose,
 } from "../../store/uiSlice";
-import { selectCurrentBoard } from "../../store/boardSlice";
 
 //reacthookform
-
 import ButtonSecondary from "../UI/ButtonSecondary";
 import ButtonDestructive from "../UI/ButtonDestructive";
 
-export default function EditBoard() {
+//react-query
+import { useCurrentBoard } from "../../hooks/useCurrentBoard";
+import { useDeleteBoard } from "../../hooks/useAllBoards";
+
+export default function DeleteBoard() {
+  const router = useRouter();
   const [isBrowser, setIsBrowser] = useState(false);
 
   const dispatch = useDispatch();
   const deleteBoardOpen = useSelector(selectDeleteBoardIsVisible);
-  const currentBoardId = useSelector(selectCurrentBoard);
-  const boardData = kanbanData.boards.find(
-    (board) => board.id === currentBoardId
-  );
+
+  const { data: currentBoard } = useCurrentBoard(router.query.board);
+  const { mutate } = useDeleteBoard();
 
   useEffect(() => {
     setIsBrowser(true);
   }, []);
+
+  const deleteCurrentBoardHandler = () => {
+    mutate(currentBoard);
+    dispatch(toggleDeleteBoardClose());
+    router.push("/");
+  };
 
   const toggleDeleteBoardCloseHandler = () => {
     dispatch(toggleDeleteBoardClose());
@@ -46,13 +54,15 @@ export default function EditBoard() {
         >
           <h2 className='text-red_main'>Delete this board?</h2>
           <p className='bodyL mt-6 text-grey_medium'>
-            Are you sure you want to delete the &apos;{boardData.name}&apos;
+            Are you sure you want to delete the &apos;{currentBoard?.name}&apos;
             board? This action will remove all columns and tasks and cannot be
             reversed.
           </p>
 
           <div className='mt-6 space-y-4 md:flex md:space-x-4 md:space-y-0'>
-            <ButtonDestructive>Delete</ButtonDestructive>
+            <ButtonDestructive onClick={deleteCurrentBoardHandler}>
+              Delete
+            </ButtonDestructive>
             <ButtonSecondary onClick={toggleDeleteBoardCloseHandler}>
               Cancel
             </ButtonSecondary>

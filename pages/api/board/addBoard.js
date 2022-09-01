@@ -19,8 +19,8 @@ export default async function (req, res) {
       .collection("public")
       .insertOne({ name, slug, columns });
 
-    res.status(201);
-    res.json({ createBoard: result });
+    res.status(200);
+    res.json({ createBoard: result, slug });
   } catch (e) {
     res.status(500);
     res.json({ error: "Unable to insert board...sorry" });

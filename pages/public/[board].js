@@ -1,6 +1,7 @@
 //Next JSX
 import { useEffect } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import BoardEmpty from "../../components/UI/BoardEmpty";
 
 //redux
@@ -10,26 +11,25 @@ import {
   toggleViewTask,
   toggleEditBoard,
 } from "../../store/uiSlice";
-import {
-  setAllBoardData,
-  setBoardData,
-  setCurrentTask,
-} from "../../store/boardSlice";
+import { setCurrentTask } from "../../store/boardSlice";
 
-//db connection
-import { connectToDatabase } from "../../util/mongodb";
+//react-query
 
-export default function Home({ boardData, allBoardData }) {
+import { useCurrentBoard } from "../../hooks/useCurrentBoard";
+
+export default function Home() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const menuDesktopOpen = useSelector(selectMenuDesktopIsVisible);
 
-  useEffect(() => {
-    dispatch(setBoardData(boardData));
-    dispatch(setAllBoardData(allBoardData));
-  }, [boardData]);
+  const {
+    data: currentBoard,
+    isLoading,
+    error,
+  } = useCurrentBoard(router.query.board);
 
   const viewTaskHandler = (taskTitle, columnName) => {
-    const columnData = boardData.columns.find(
+    const columnData = currentBoard?.columns.find(
       (column) => column.name === columnName
     );
     const taskData = columnData.tasks.find((task) => task.title === taskTitle);
@@ -53,11 +53,11 @@ export default function Home({ boardData, allBoardData }) {
         <link rel='icon' href='/assets/logo-mobile.svg' />
       </Head>
 
-      {boardData.columns.length === 0 ? (
+      {currentBoard?.columns.length === 0 ? (
         <BoardEmpty />
       ) : (
         <div className='flex space-x-6 '>
-          {boardData.columns.map((item, i) => (
+          {currentBoard?.columns.map((item, i) => (
             <div key={i} className=' w-[280px] flex-none snap-start'>
               <div className='flex'>
                 <div
@@ -109,27 +109,4 @@ export default function Home({ boardData, allBoardData }) {
       )}
     </div>
   );
-}
-
-export async function getServerSideProps(context) {
-  const { db } = await connectToDatabase();
-
-  const data = await db
-    .collection("public")
-    .findOne({ slug: context.query.board });
-
-  const allBoards = await db
-    .collection("public")
-    .find({})
-    .sort({ name: 1 })
-    .project({ _id: 1, name: 1, slug: 1 })
-    .toArray();
-
-  const boardData = JSON.parse(JSON.stringify(data));
-
-  const allBoardData = JSON.parse(JSON.stringify(allBoards));
-
-  return {
-    props: { boardData, allBoardData },
-  };
 }

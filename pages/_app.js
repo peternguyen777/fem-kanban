@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import { ThemeProvider } from "next-themes";
 import { Provider } from "react-redux";
 import store from "../store";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import Header from "../components/Header";
 import MenuMobile from "../components/Modals/MenuMobile";
@@ -15,36 +16,40 @@ import EditBoard from "../components/Modals/EditBoard";
 import DeleteTask from "../components/Modals/DeleteTask";
 import DeleteBoard from "../components/Modals/DeleteBoard";
 
+const queryClient = new QueryClient();
+
 function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
-      <ThemeProvider
-        defaultTheme='system'
-        enableSystem={true}
-        attribute='class'
-      >
-        {/* Portals */}
-        <MenuMobile />
-        <ViewTask />
-        <AddTask />
-        <EditTask />
-        <DeleteTask />
-        <AddBoard />
-        <EditBoard />
-        <DeleteBoard />
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider
+          defaultTheme='system'
+          enableSystem={true}
+          attribute='class'
+        >
+          {/* Portals */}
+          <MenuMobile />
+          <ViewTask />
+          <AddTask />
+          <EditTask />
+          <DeleteTask />
+          <AddBoard />
+          <EditBoard />
+          <DeleteBoard />
 
-        {/* Sidebar Toggle */}
-        <SidebarToggle />
+          {/* Sidebar Toggle */}
+          <SidebarToggle />
 
-        {/* Main */}
-        <div className='flex min-h-screen'>
-          <MenuDesktop />
-          <div className='flex-1'>
-            <Header />
-            <Component {...pageProps} />
+          {/* Main */}
+          <div className='flex min-h-screen'>
+            <MenuDesktop />
+            <div className='flex-1'>
+              <Header />
+              <Component {...pageProps} />
+            </div>
           </div>
-        </div>
-      </ThemeProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </Provider>
   );
 }

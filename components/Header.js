@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import ButtonAddNewTaskMobile from "./UI/ButtonAddNewTaskMobile";
 import ButtonAddNewTask from "./UI/ButtonAddNewTask";
 import HeaderLogos from "./UI/HeaderLogos";
@@ -14,16 +15,18 @@ import {
   toggleEditBoard,
   toggleDeleteBoard,
 } from "../store/uiSlice";
-import { selectBoardData } from "../store/boardSlice";
+
+import { useCurrentBoard } from "../hooks/useCurrentBoard";
 
 function Header() {
+  const router = useRouter();
   const [isDotsOpen, setIsDotsOpen] = useState(false);
   const dispatch = useDispatch();
   const menuDesktopOpen = useSelector(selectMenuDesktopIsVisible);
   const menuMobileOpen = useSelector(selectMenuMobileIsVisible);
   const sidebarOn = useSelector(selectToggleable);
 
-  const boardData = useSelector(selectBoardData);
+  const { data: currentBoard } = useCurrentBoard(router.query.board);
 
   const menuMobileToggleHandler = () => {
     if (sidebarOn) dispatch(toggleMenuMobile());
@@ -77,7 +80,7 @@ function Header() {
               menuDesktopOpen ? `md:ml-0` : `md:ml-6`
             } md:text-[20px] md:leading-[25px]`}
           >
-            {boardData.name}
+            {currentBoard?.name}
           </h2>
           {menuMobileOpen ? (
             <svg
@@ -98,10 +101,10 @@ function Header() {
       </div>
       <div className='relative flex items-center '>
         <ButtonAddNewTaskMobile
-          disabled={boardData.columns?.length === 0 && `disabled`}
+          disabled={currentBoard?.columns.length === 0 && `disabled`}
         />
         <ButtonAddNewTask
-          disabled={boardData.columns?.length === 0 && `disabled`}
+          disabled={currentBoard?.columns.length === 0 && `disabled`}
         >
           + Add New Task
         </ButtonAddNewTask>

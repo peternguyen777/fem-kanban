@@ -5,7 +5,6 @@ const initialState = {
   currentTask: {},
   //new data
   boardData: {},
-  allBoardData: [],
 };
 
 const boardSlice = createSlice({
@@ -26,23 +25,14 @@ const boardSlice = createSlice({
       const selectedBoard = action.payload;
       state.boardData = selectedBoard;
     },
-    setAllBoardData: (state, action) => {
-      const allBoards = action.payload;
-      state.allBoardData = allBoards;
-    },
   },
 });
 
-export const {
-  setCurrentBoard,
-  setCurrentTask,
-  setBoardData,
-  setAllBoardData,
-} = boardSlice.actions;
+export const { setCurrentBoard, setCurrentTask, setBoardData } =
+  boardSlice.actions;
 
 export const selectCurrentBoard = (state) => state.board.currentBoard;
 export const selectCurrentTask = (state) => state.board.currentTask;
 export const selectBoardData = (state) => state.board.boardData;
-export const selectAllBoardData = (state) => state.board.allBoardData;
 
 export default boardSlice.reducer;

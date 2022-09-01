@@ -12,20 +12,29 @@ import { useForm, useFieldArray } from "react-hook-form";
 import ButtonSecondary from "../UI/ButtonSecondary";
 import ButtonPrimary from "../UI/ButtonPrimary";
 
+//react-query
+import { useAddBoard } from "../../hooks/useAllBoards";
+
 export default function AddBoard() {
   const [isBrowser, setIsBrowser] = useState(false);
+
+  const { mutate } = useAddBoard();
 
   const dispatch = useDispatch();
   const addBoardOpen = useSelector(selectAddBoardIsVisible);
 
-  const { register, control, handleSubmit, reset, formState } = useForm({
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     mode: "all",
     defaultValues: {
       columns: [{ name: "" }, { name: "" }],
     },
   });
-
-  const { errors } = formState;
 
   const {
     fields: colFields,
@@ -46,15 +55,7 @@ export default function AddBoard() {
     reset();
     dispatch(toggleAddBoardClose());
 
-    const response = await fetch("/api/board/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ createBoard: data }),
-    });
-    const resData = await response.json();
-    return resData.createBoard;
+    mutate(data);
   };
 
   const modalContent = (
