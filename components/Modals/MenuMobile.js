@@ -14,8 +14,7 @@ import {
 } from "../../store/uiSlice";
 
 //react-query
-import { useCurrentBoard } from "../../hooks/useCurrentBoard";
-import { useFetchAllBoards } from "../../hooks/useAllBoards";
+import { useFetchAllBoards, useCurrentBoard } from "../../hooks/useAllBoards";
 
 export default function MobileMenu() {
   const router = useRouter();
@@ -57,7 +56,7 @@ export default function MobileMenu() {
               {allBoards?.map((item) => (
                 <li
                   onClick={() => {
-                    router.push(`/public/${item.slug}`);
+                    router.push(`/public/${item._id}`);
                     dispatch(toggleMenuMobileClose());
                   }}
                   key={item._id}

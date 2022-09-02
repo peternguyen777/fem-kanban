@@ -4,6 +4,8 @@ import { Provider } from "react-redux";
 import store from "../store";
 import { QueryClient, QueryClientProvider } from "react-query";
 
+import { useRouter } from "next/router";
+
 import Header from "../components/Header";
 import MenuMobile from "../components/Modals/MenuMobile";
 import MenuDesktop from "../components/UI/MenuDesktop";
@@ -19,6 +21,8 @@ import DeleteBoard from "../components/Modals/DeleteBoard";
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
@@ -28,8 +32,9 @@ function MyApp({ Component, pageProps }) {
           attribute='class'
         >
           {/* Portals */}
+          {router.query.task && <ViewTask />}
+
           <MenuMobile />
-          <ViewTask />
           <AddTask />
           <EditTask />
           <DeleteTask />

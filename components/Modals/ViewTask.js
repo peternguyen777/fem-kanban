@@ -1,37 +1,53 @@
 import React, { useState, useEffect } from "react";
-// import kanbanData from "../../public/data.json";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   selectViewTaskIsVisible,
   toggleViewTaskClose,
   toggleEditTask,
   toggleDeleteTask,
 } from "../../store/uiSlice";
-import { selectBoardData, selectCurrentTask } from "../../store/boardSlice";
 import Dropdown from "../UI/Dropdown";
 
-export default function ViewTask() {
+//react-query
+import { useCurrentBoard } from "../../hooks/useAllBoards";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+
+export default function ViewTask(taskId, colId, boardId) {
+  const router = useRouter();
   const dispatch = useDispatch();
   const [isBrowser, setIsBrowser] = useState(false);
   const [isDotsOpen, setIsDotsOpen] = useState(false);
-  const taskData = useSelector(selectCurrentTask);
-  const [status, setStatus] = useState();
+  const [status, setStatus] = useState(taskData?.status);
   const viewTaskOpen = useSelector(selectViewTaskIsVisible);
-  const boardData = useSelector(selectBoardData);
+
+  const {
+    data: currentBoard,
+    isLoading,
+    error,
+  } = useCurrentBoard(router.query.board);
+
+  const columnData = currentBoard?.columns.find(
+    (column) => column._id === router.query.column
+  );
+  const taskData = columnData?.tasks.find(
+    (task) => task._id === router.query.task
+  );
 
   useEffect(() => {
     setIsBrowser(true);
   }, []);
 
   useEffect(() => {
-    setStatus(taskData.status);
+    setStatus(taskData?.status);
   }, [taskData]);
 
   const toggleViewTaskHandler = () => {
     dispatch(toggleViewTaskClose());
     setIsDotsOpen(false);
+    setTimeout(router.back, 200);
   };
 
   const setSubtaskCompleteHandler = () => {
@@ -54,7 +70,7 @@ export default function ViewTask() {
   };
 
   var completedTasks = 0;
-  taskData.subtasks?.forEach((item) => {
+  taskData?.subtasks?.forEach((item) => {
     if (item.isCompleted) {
       completedTasks++;
     }
@@ -148,11 +164,11 @@ export default function ViewTask() {
                 </div>
               ))}
             </ul>
-            {/* <Dropdown
-              boardData={boardData}
+            <Dropdown
+              boardData={currentBoard}
               setStatus={setStatus}
               status={status}
-            /> */}
+            />
           </div>
         </motion.div>
       ) : null}

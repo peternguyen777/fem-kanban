@@ -13,8 +13,7 @@ import ButtonSecondary from "../UI/ButtonSecondary";
 import ButtonDestructive from "../UI/ButtonDestructive";
 
 //react-query
-import { useCurrentBoard } from "../../hooks/useCurrentBoard";
-import { useDeleteBoard } from "../../hooks/useAllBoards";
+import { useDeleteBoard, useCurrentBoard } from "../../hooks/useAllBoards";
 
 export default function DeleteBoard() {
   const router = useRouter();

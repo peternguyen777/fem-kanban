@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import kanbanData from "../../public/data.json";
+import { useRouter } from "next/router";
+
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,22 +8,27 @@ import {
   selectEditBoardIsVisible,
   toggleEditBoardClose,
 } from "../../store/uiSlice";
-import { selectCurrentBoard } from "../../store/boardSlice";
 
 //reacthookform
 import { useForm, useFieldArray } from "react-hook-form";
 import ButtonSecondary from "../UI/ButtonSecondary";
 import ButtonPrimary from "../UI/ButtonPrimary";
 
+//react-query
+import { useCurrentBoard } from "../../hooks/useAllBoards";
+
 export default function EditBoard() {
+  const router = useRouter();
   const [isBrowser, setIsBrowser] = useState(false);
   const dispatch = useDispatch();
-  const currentBoardId = useSelector(selectCurrentBoard);
-  const boardData = kanbanData.boards.find(
-    (board) => board.id === currentBoardId
-  );
 
   const editBoardOpen = useSelector(selectEditBoardIsVisible);
+
+  const {
+    data: currentBoard,
+    isLoading,
+    error,
+  } = useCurrentBoard(router.query.board);
 
   const {
     register,
@@ -34,7 +40,7 @@ export default function EditBoard() {
   } = useForm({
     mode: "all",
     defaultValues: {
-      colItems: [{ items: "" }, { items: "" }],
+      columns: [{ name: "" }, { name: "" }],
     },
   });
 
@@ -43,29 +49,32 @@ export default function EditBoard() {
     append: colAppend,
     remove: colRemove,
     replace,
-  } = useFieldArray({ control, name: "colItems" });
+  } = useFieldArray({ control, name: "columns" });
 
   useEffect(() => {
     setIsBrowser(true);
   }, []);
 
   useEffect(() => {
-    setValue("name", boardData?.name);
-    if (boardData?.columns.length !== 0) {
-      const colItemsArr = boardData.columns.map((col) => ({ items: col.name }));
+    setValue("name", currentBoard?.name);
+    if (currentBoard?.columns.length !== 0) {
+      const colItemsArr = currentBoard?.columns.map((col) => ({
+        name: col.name,
+      }));
       replace(colItemsArr);
     } else {
-      resetField("colItems");
+      resetField("columns");
     }
-  }, [currentBoardId]);
+  }, [currentBoard]);
 
   const toggleEditBoardHandler = () => {
     dispatch(toggleEditBoardClose());
   };
 
   const onSubmit = (data) => {
-    data.colItems = data.colItems.filter((str) => str.items.trim() !== "");
+    data.columns = data.columns.filter((str) => str.name.trim() !== "");
     dispatch(toggleEditBoardClose());
+    console.log(data);
   };
 
   const modalContent = (
@@ -117,7 +126,7 @@ export default function EditBoard() {
                   return (
                     <div key={item.id} className='mt-3 flex items-center'>
                       <input
-                        {...register(`colItems.${index}.items`)}
+                        {...register(`columns.${index}.name`)}
                         placeholder='eg. Todo'
                         className='mr-4 w-full ring-grey_medium/25'
                       />
@@ -144,7 +153,7 @@ export default function EditBoard() {
               <ButtonSecondary
                 onClick={(e) => {
                   e.preventDefault();
-                  colAppend({ items: "" });
+                  colAppend({ name: "" });
                 }}
               >
                 + Add New Column

@@ -12,8 +12,7 @@ import {
 } from "../../store/uiSlice";
 
 //react-query
-import { useCurrentBoard } from "../../hooks/useCurrentBoard";
-import { useFetchAllBoards } from "../../hooks/useAllBoards";
+import { useFetchAllBoards, useCurrentBoard } from "../../hooks/useAllBoards";
 
 function MenuDesktop() {
   const router = useRouter();
@@ -88,7 +87,7 @@ function MenuDesktop() {
             {allBoards?.map((item) => (
               <li
                 key={item._id}
-                onClick={() => router.push(`/public/${item.slug}`)}
+                onClick={() => router.push(`/public/${item._id}`)}
                 className={`group grid h-12 cursor-pointer items-center rounded-r-full transition-colors md:w-[240px] lg:w-[276px] ${
                   currentBoard?.name === item.name
                     ? `bg-purple_main`

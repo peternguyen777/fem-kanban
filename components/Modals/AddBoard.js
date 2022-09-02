@@ -17,11 +17,10 @@ import { useAddBoard } from "../../hooks/useAllBoards";
 
 export default function AddBoard() {
   const [isBrowser, setIsBrowser] = useState(false);
-
-  const { mutate } = useAddBoard();
+  const addBoardOpen = useSelector(selectAddBoardIsVisible);
 
   const dispatch = useDispatch();
-  const addBoardOpen = useSelector(selectAddBoardIsVisible);
+  const { mutate } = useAddBoard();
 
   const {
     register,

@@ -16,7 +16,8 @@ import {
   toggleDeleteBoard,
 } from "../store/uiSlice";
 
-import { useCurrentBoard } from "../hooks/useCurrentBoard";
+import { useCurrentBoard } from "../hooks/useAllBoards";
+import { Modal } from "./Modals/modal";
 
 function Header() {
   const router = useRouter();
@@ -123,21 +124,28 @@ function Header() {
             </g>
           </svg>
         </div>
+
         {isDotsOpen && (
-          <div className='absolute top-[calc(100%+8px)] right-0 w-[192px] select-none rounded-lg border border-lines_light bg-white shadow-lg dark:border-lines_dark dark:bg-grey_verydark'>
-            <p
-              className='bodyL cursor-pointer px-4 pt-4 pb-2 text-grey_medium'
-              onClick={editClickHandler}
-            >
-              Edit Board
-            </p>
-            <p
-              className='bodyL cursor-pointer px-4 pb-4 pt-2 text-red_main'
-              onClick={deleteClickHandler}
-            >
-              Delete Board
-            </p>
-          </div>
+          <Modal
+            onClose={() => {
+              setIsDotsOpen(false);
+            }}
+          >
+            <div className='absolute top-[60px] right-4 w-[192px] select-none rounded-lg border border-lines_light bg-white shadow-lg dark:border-lines_dark dark:bg-grey_verydark md:top-[80px] md:right-6'>
+              <p
+                className='bodyL cursor-pointer px-4 pt-4 pb-2 text-grey_medium'
+                onClick={editClickHandler}
+              >
+                Edit Board
+              </p>
+              <p
+                className='bodyL cursor-pointer px-4 pb-4 pt-2 text-red_main'
+                onClick={deleteClickHandler}
+              >
+                Delete Board
+              </p>
+            </div>
+          </Modal>
         )}
       </div>
     </header>

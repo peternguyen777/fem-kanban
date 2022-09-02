@@ -23,9 +23,7 @@ function Dropdown({ taskData, boardData, setStatus, status }) {
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           <span className='flex items-center'>
-            <p className='bodyL truncate dark:text-white'>
-              {status || boardData.columns[0].name}
-            </p>
+            <p className='bodyL truncate dark:text-white'>{status}</p>
           </span>
           <span className='pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-4'>
             {isDropdownOpen ? (
