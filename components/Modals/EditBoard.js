@@ -15,7 +15,8 @@ import ButtonSecondary from "../UI/ButtonSecondary";
 import ButtonPrimary from "../UI/ButtonPrimary";
 
 //react-query
-import { useCurrentBoard } from "../../hooks/useAllBoards";
+import { useCurrentBoard } from "../../hooks/useQuery";
+import { useEditBoard } from "../../hooks/useMutation";
 
 export default function EditBoard() {
   const router = useRouter();
@@ -29,6 +30,8 @@ export default function EditBoard() {
     isLoading,
     error,
   } = useCurrentBoard(router.query.board);
+
+  const { mutate } = useEditBoard();
 
   const {
     register,
@@ -74,7 +77,11 @@ export default function EditBoard() {
   const onSubmit = (data) => {
     data.columns = data.columns.filter((str) => str.name.trim() !== "");
     dispatch(toggleEditBoardClose());
+
     console.log(data);
+    data._id = currentBoard._id;
+
+    mutate(data);
   };
 
   const modalContent = (

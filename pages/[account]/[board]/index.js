@@ -15,7 +15,7 @@ import {
 } from "../../../store/uiSlice";
 
 //react-query
-import { useCurrentBoard } from "../../../hooks/useAllBoards";
+import { useCurrentBoard } from "../../../hooks/useQuery";
 
 export default function Home() {
   const router = useRouter();

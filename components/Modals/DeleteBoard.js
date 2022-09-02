@@ -13,7 +13,8 @@ import ButtonSecondary from "../UI/ButtonSecondary";
 import ButtonDestructive from "../UI/ButtonDestructive";
 
 //react-query
-import { useDeleteBoard, useCurrentBoard } from "../../hooks/useAllBoards";
+import { useCurrentBoard } from "../../hooks/useQuery";
+import { useDeleteBoard } from "../../hooks/useMutation";
 
 export default function DeleteBoard() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function DeleteBoard() {
   }, []);
 
   const deleteCurrentBoardHandler = () => {
-    mutate(currentBoard);
+    mutate(currentBoard._id);
     dispatch(toggleDeleteBoardClose());
     router.push("/");
   };

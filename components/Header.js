@@ -16,7 +16,7 @@ import {
   toggleDeleteBoard,
 } from "../store/uiSlice";
 
-import { useCurrentBoard } from "../hooks/useAllBoards";
+import { useCurrentBoard } from "../hooks/useQuery";
 import { Modal } from "./Modals/modal";
 
 function Header() {

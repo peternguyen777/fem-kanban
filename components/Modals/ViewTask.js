@@ -11,7 +11,7 @@ import {
 import Dropdown from "../UI/Dropdown";
 
 //react-query
-import { useCurrentBoard } from "../../hooks/useAllBoards";
+import { useCurrentBoard } from "../../hooks/useQuery";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 

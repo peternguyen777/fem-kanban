@@ -14,7 +14,7 @@ import {
 } from "../../store/uiSlice";
 
 //react-query
-import { useFetchAllBoards, useCurrentBoard } from "../../hooks/useAllBoards";
+import { useFetchAllBoards, useCurrentBoard } from "../../hooks/useQuery";
 
 export default function MobileMenu() {
   const router = useRouter();

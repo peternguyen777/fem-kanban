@@ -12,7 +12,7 @@ import {
 } from "../../store/uiSlice";
 
 //react-query
-import { useFetchAllBoards, useCurrentBoard } from "../../hooks/useAllBoards";
+import { useFetchAllBoards, useCurrentBoard } from "../../hooks/useQuery";
 
 function MenuDesktop() {
   const router = useRouter();
@@ -89,7 +89,7 @@ function MenuDesktop() {
                 key={item._id}
                 onClick={() => router.push(`/public/${item._id}`)}
                 className={`group grid h-12 cursor-pointer items-center rounded-r-full transition-colors md:w-[240px] lg:w-[276px] ${
-                  currentBoard?.name === item.name
+                  currentBoard?._id === item._id
                     ? `bg-purple_main`
                     : `hover:bg-purple_main/10 hover:dark:bg-white`
                 }`}
@@ -98,7 +98,7 @@ function MenuDesktop() {
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     className={`mr-3 h-4 w-4 fill-current ${
-                      currentBoard?.name === item.name
+                      currentBoard?._id === item._id
                         ? `text-white group-hover:text-white`
                         : `text-grey_medium group-hover:text-purple_main `
                     }`}
@@ -107,7 +107,7 @@ function MenuDesktop() {
                   </svg>
                   <h3
                     className={`-translate-y-[1px] ${
-                      currentBoard?.name === item.name
+                      currentBoard?._id === item._id
                         ? `text-white group-hover:text-white`
                         : `text-grey_medium group-hover:text-purple_main `
                     }`}

@@ -13,7 +13,9 @@ import ButtonSecondary from "../UI/ButtonSecondary";
 import ButtonPrimary from "../UI/ButtonPrimary";
 
 //react-query
-import { useAddBoard } from "../../hooks/useAllBoards";
+// import { useAddBoard } from "../../hooks/useAllBoards";
+
+import { useAddBoard } from "../../hooks/useMutation";
 
 export default function AddBoard() {
   const [isBrowser, setIsBrowser] = useState(false);

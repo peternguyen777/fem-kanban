@@ -1,11 +1,14 @@
+import { ObjectId } from "mongodb";
 import { connectToDatabase } from "../../../util/mongodb";
 
 export default async function (req, res) {
   try {
     const { db } = await connectToDatabase();
-    const body = await JSON.parse(req.body);
+    const id = await JSON.parse(req.body);
 
-    const result = await db.collection("public").deleteOne({ slug: body.slug });
+    const result = await db
+      .collection("public")
+      .deleteOne({ _id: ObjectId(id) });
 
     res.status(200);
     res.json({ deleteBoard: result });
