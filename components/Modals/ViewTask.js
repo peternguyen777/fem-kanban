@@ -12,6 +12,7 @@ import Dropdown from "../UI/Dropdown";
 
 //react-query
 import { useCurrentBoard } from "../../hooks/useQuery";
+import { useSubtaskClick } from "../../hooks/useMutationTask";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 
@@ -28,6 +29,8 @@ export default function ViewTask(taskId, colId, boardId) {
     isLoading,
     error,
   } = useCurrentBoard(router.query.board);
+
+  const { mutate } = useSubtaskClick();
 
   const columnData = currentBoard?.columns.find(
     (column) => column._id === router.query.column
@@ -50,8 +53,12 @@ export default function ViewTask(taskId, colId, boardId) {
     setTimeout(router.back, 200);
   };
 
-  const setSubtaskCompleteHandler = () => {
+  const setSubtaskCompleteHandler = (subtask) => {
     //change subtask complete
+    subtask.boardId = router.query.board;
+    subtask.colId = router.query.column;
+    subtask.taskId = router.query.task;
+    mutate(subtask);
   };
 
   const editClickHandler = () => {
@@ -133,6 +140,7 @@ export default function ViewTask(taskId, colId, boardId) {
               {taskData.subtasks.map((task, i) => (
                 <div
                   key={i}
+                  onClick={() => setSubtaskCompleteHandler(task)}
                   className='flex cursor-pointer rounded-[4px] bg-grey_light py-4 pl-3 pr-2 hover:bg-purple_main/25 dark:bg-grey_verydark'
                 >
                   <div
@@ -141,7 +149,6 @@ export default function ViewTask(taskId, colId, boardId) {
                         ? `border-purple_main bg-purple_main`
                         : `border-lines_light bg-white dark:border-lines_dark dark:bg-grey_dark `
                     }`}
-                    onClick={setSubtaskCompleteHandler}
                   >
                     {task.isCompleted && (
                       <svg

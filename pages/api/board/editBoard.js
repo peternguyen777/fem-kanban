@@ -11,7 +11,7 @@ export default async function (req, res) {
 
     // const colNames = columns.map((col) => col.name);
 
-    const result = await db.collection("public").update(
+    const result = await db.collection("public").updateOne(
       { _id: ObjectId(_id) },
       {
         $set: {
