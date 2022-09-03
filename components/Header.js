@@ -27,7 +27,7 @@ function Header() {
   const menuMobileOpen = useSelector(selectMenuMobileIsVisible);
   const sidebarOn = useSelector(selectToggleable);
 
-  const { data: currentBoard } = useCurrentBoard(router.query.board);
+  const { data: currentBoard, isSuccess } = useCurrentBoard(router.query.board);
 
   const menuMobileToggleHandler = () => {
     if (sidebarOn) dispatch(toggleMenuMobile());
@@ -83,7 +83,7 @@ function Header() {
           >
             {currentBoard?.name}
           </h2>
-          {menuMobileOpen ? (
+          {isSuccess && menuMobileOpen ? (
             <svg
               xmlns='http://www.w3.org/2000/svg'
               className='h-[7px] w-[10px] stroke-[#635FC7] stroke-2 md:hidden'
