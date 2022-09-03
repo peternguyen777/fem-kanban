@@ -80,7 +80,7 @@ export default function AddTask() {
 
     //append isCompleted to each new subtask
     data.subtasks = data.subtasks.map((item) => ({
-      task: item.task,
+      title: item.task,
       isCompleted: false,
     }));
 

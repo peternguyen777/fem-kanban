@@ -5,18 +5,25 @@ export default async function (req, res) {
   try {
     const { db } = await connectToDatabase();
 
-    // const data = req.body;
-    // console.log(req.body);
+    const { boardId, ...taskData } = req.body;
 
-    // const cols = columns.map((col) => ({
-    //   ...col,
-    //   color: randomColor(),
-    //   _id: ObjectId(),
-    // }));
+    const task = { ...taskData, _id: ObjectId() };
 
-    // const result = await db
-    //   .collection("public")
-    //   .insertOne({ name, columns: cols });
+    const result = await db.collection("public").updateOne(
+      { _id: ObjectId(boardId) },
+      {
+        $push: {
+          "columns.$[column].tasks": task,
+        },
+      },
+      {
+        arrayFilters: [
+          {
+            "column.name": task.status,
+          },
+        ],
+      }
+    );
 
     res.status(200);
     res.json({ createBoard: result });
