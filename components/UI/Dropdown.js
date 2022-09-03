@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Dropdown({ taskData, boardData, setStatus, status }) {
+function Dropdown({ boardData, setStatus, status }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const setAssignedToHandler = (statusName) => {
@@ -49,7 +49,7 @@ function Dropdown({ taskData, boardData, setStatus, status }) {
             className='absolute z-10 mt-2 max-h-56 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-grey_dark '
             tabIndex='-1'
           >
-            {boardData.columns.map((status, i) => (
+            {boardData?.columns.map((status, i) => (
               <li
                 className='relative cursor-pointer select-none py-2 pl-4'
                 key={i}

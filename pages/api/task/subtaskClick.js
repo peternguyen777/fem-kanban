@@ -7,7 +7,7 @@ export default async function (req, res) {
 
     const { title, isCompleted, boardId, colId, taskId } = req.body;
 
-    const result = await db.collection("public").update(
+    const result = await db.collection("public").updateOne(
       { _id: ObjectId(boardId) },
       {
         $set: {

@@ -52,7 +52,7 @@ export const useEditBoard = () => {
   const queryClient = useQueryClient();
 
   return useMutation(editBoard, {
-    onSuccess: (newBoard) => {
+    onSuccess: () => {
       queryClient.invalidateQueries();
     },
   });

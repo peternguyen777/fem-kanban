@@ -1,31 +1,44 @@
 import React, { useState, useEffect } from "react";
-import kanbanData from "../../public/data.json";
+import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
+
+//JSX
+import Dropdown from "../UI/Dropdown";
+import ButtonSecondary from "../UI/ButtonSecondary";
+import ButtonPrimary from "../UI/ButtonPrimary";
+
+//redux
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectAddTaskIsVisible,
   toggleAddTaskClose,
 } from "../../store/uiSlice";
-import { selectCurrentBoard } from "../../store/boardSlice";
-import Dropdown from "../UI/Dropdown";
 
 //reacthookform
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import taskValidation from "../../validation/taskValidation";
-import ButtonSecondary from "../UI/ButtonSecondary";
-import ButtonPrimary from "../UI/ButtonPrimary";
+
+//react-query
+import { useAddTask } from "../../hooks/useMutationTask";
+import { useCurrentBoard } from "../../hooks/useQuery";
 
 export default function AddTask() {
-  const currentBoardId = useSelector(selectCurrentBoard);
-  const boardData = kanbanData.boards.find(
-    (board) => board.id === currentBoardId
-  );
-  const [isBrowser, setIsBrowser] = useState(false);
-  const [status, setStatus] = useState(boardData?.columns[0]?.name);
-
+  const router = useRouter();
   const dispatch = useDispatch();
+
+  const [isBrowser, setIsBrowser] = useState(false);
+
+  const {
+    data: boardData,
+    isLoading,
+    error,
+  } = useCurrentBoard(router.query.board);
+
+  const { mutate } = useAddTask();
+
+  const [status, setStatus] = useState(boardData?.columns[0].name);
   const addTaskOpen = useSelector(selectAddTaskIsVisible);
 
   const {
@@ -55,7 +68,7 @@ export default function AddTask() {
   const toggleAddTaskCloseHandler = () => {
     //reset react-hook-form fields & Dropdown custom component (Status)
     reset();
-    setStatus(boardData.columns[0].name);
+    setStatus(boardData?.columns[0].name);
 
     //close the modal
     dispatch(toggleAddTaskClose());
@@ -71,14 +84,16 @@ export default function AddTask() {
       isCompleted: false,
     }));
 
+    data.boardId = router.query.board;
+
+    mutate(data);
+
     //reset react-hook-form fields & Dropdown custom component (Status)
     reset();
     setStatus(boardData.columns[0]?.name);
 
     //close the modal
     dispatch(toggleAddTaskClose());
-
-    console.log(data);
   };
 
   const modalContent = (
