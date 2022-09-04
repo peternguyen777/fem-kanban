@@ -38,7 +38,7 @@ export default function AddTask() {
 
   const { mutate } = useAddTask();
 
-  const [status, setStatus] = useState(boardData?.columns[0].name);
+  const [status, setStatus] = useState(boardData?.columns[0]?.name);
   const addTaskOpen = useSelector(selectAddTaskIsVisible);
 
   const {

@@ -97,7 +97,7 @@ export default function ViewTask(taskId, colId, boardId) {
         >
           <div>
             <div className='relative flex items-center justify-between '>
-              <h2>{taskData.title}</h2>
+              <h2>{taskData?.title}</h2>
               <div
                 className='ml-4 grid h-10 w-5 cursor-pointer items-center justify-end'
                 onClick={() => setIsDotsOpen(!isDotsOpen)}

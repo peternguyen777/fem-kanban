@@ -34,6 +34,6 @@ export default async function (req, res) {
     res.json({ subtaskClick: result });
   } catch (e) {
     res.status(500);
-    res.json({ error: "Unable to edit board...sorry" });
+    res.json({ error: "Unable to click subtask...sorry" });
   }
 }

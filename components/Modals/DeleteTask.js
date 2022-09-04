@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,16 +12,32 @@ import { selectCurrentTask } from "../../store/boardSlice";
 import ButtonSecondary from "../UI/ButtonSecondary";
 import ButtonDestructive from "../UI/ButtonDestructive";
 
+import { useDeleteTask } from "../../hooks/useMutationTask";
+
 export default function EditBoard() {
+  const router = useRouter();
   const [isBrowser, setIsBrowser] = useState(false);
 
   const dispatch = useDispatch();
   const deleteTaskOpen = useSelector(selectDeleteTaskIsVisible);
   const currentTask = useSelector(selectCurrentTask);
 
+  const { mutate } = useDeleteTask();
+
   useEffect(() => {
     setIsBrowser(true);
   }, []);
+
+  const deleteTaskHandler = () => {
+    const taskData = {
+      boardId: router.query.board,
+      colId: router.query.column,
+      taskId: router.query.task,
+    };
+
+    mutate(taskData);
+    dispatch(toggleDeleteTaskClose());
+  };
 
   const toggleDeleteTaskCloseHandler = () => {
     dispatch(toggleDeleteTaskClose());
@@ -45,7 +62,9 @@ export default function EditBoard() {
           </p>
 
           <div className='mt-6 space-y-4 md:flex md:space-x-4 md:space-y-0'>
-            <ButtonDestructive>Delete</ButtonDestructive>
+            <ButtonDestructive onClick={deleteTaskHandler}>
+              Delete
+            </ButtonDestructive>
             <ButtonSecondary onClick={toggleDeleteTaskCloseHandler}>
               Cancel
             </ButtonSecondary>
