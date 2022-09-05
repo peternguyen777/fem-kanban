@@ -30,6 +30,9 @@ const editBoard = async (boardData) => {
 const deleteBoard = async (id) => {
   const response = await fetch("/api/board/deleteBoard", {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(id),
   });
   const data = await response.json();

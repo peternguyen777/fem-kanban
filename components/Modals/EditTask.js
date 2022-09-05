@@ -23,6 +23,7 @@ import taskValidation from "../../validation/taskValidation";
 
 //react-query
 import { useCurrentBoard } from "../../hooks/useQuery";
+import { useEditTask, useStatusChange } from "../../hooks/useMutationTask";
 
 export default function EditTask() {
   const router = useRouter();
@@ -41,8 +42,11 @@ export default function EditTask() {
     (task) => task._id === router.query.task
   );
 
+  const { mutate: mutateEditTask } = useEditTask();
+  const { mutate: mutateStatusChange } = useStatusChange();
+
   const [isBrowser, setIsBrowser] = useState(false);
-  const [status, setStatus] = useState(taskData?.status);
+  const [status, setStatus] = useState(columnData?.name);
 
   const editTaskOpen = useSelector(selectEditTaskIsVisible);
 
@@ -70,12 +74,12 @@ export default function EditTask() {
 
   useEffect(() => {
     setIsBrowser(true);
-  }, []);
+    setStatus(columnData?.name);
+  }, [columnData]);
 
   useEffect(() => {
     setValue("title", taskData?.title);
     setValue("description", taskData?.description);
-    setStatus(taskData?.status);
     const subtaskArr = taskData?.subtasks.map((task) => ({ task: task.title }));
     replace(subtaskArr);
   }, [taskData, replace, setValue]);
@@ -101,16 +105,29 @@ export default function EditTask() {
       );
 
       if (existingTask) {
-        return { task: item.task, isCompleted: true };
+        return { title: item.task, isCompleted: true };
       } else {
-        return { task: item.task, isCompleted: false };
+        return { title: item.task, isCompleted: false };
       }
     });
 
+    data.boardId = router.query.board;
+    data.colId = router.query.column;
+    data.taskId = router.query.task;
+
+    //api requests
+    mutateEditTask(data);
+    if (status !== columnData.name) {
+      const colTo = currentBoard?.columns.find(
+        (column) => column.name === status
+      );
+
+      data.colToId = colTo._id;
+      mutateStatusChange(data);
+    }
+
     //close the modal
     dispatch(toggleEditTaskClose());
-
-    console.log(data);
   };
 
   const modalContent = (

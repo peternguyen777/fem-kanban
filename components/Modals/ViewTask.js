@@ -18,40 +18,39 @@ import {
 
 //react-query
 import { useCurrentBoard } from "../../hooks/useQuery";
-import { useSubtaskClick } from "../../hooks/useMutationTask";
+import { useSubtaskClick, useStatusChange } from "../../hooks/useMutationTask";
 
 export default function ViewTask(taskId, colId, boardId) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [isBrowser, setIsBrowser] = useState(false);
-  const [isDotsOpen, setIsDotsOpen] = useState(false);
-  const [status, setStatus] = useState(taskData?.status);
-  const viewTaskOpen = useSelector(selectViewTaskIsVisible);
-
   const {
     data: currentBoard,
     isLoading,
     error,
   } = useCurrentBoard(router.query.board);
 
-  const { mutate } = useSubtaskClick();
-
   const columnData = currentBoard?.columns.find(
     (column) => column._id === router.query.column
   );
+
   const taskData = columnData?.tasks.find(
     (task) => task._id === router.query.task
   );
 
+  const [isBrowser, setIsBrowser] = useState(false);
+  const [isDotsOpen, setIsDotsOpen] = useState(false);
+  const [status, setStatus] = useState("");
+  const viewTaskOpen = useSelector(selectViewTaskIsVisible);
+
+  const { mutate: mutateSubtask } = useSubtaskClick();
+  const { mutate: mutateStatus } = useStatusChange();
+
   useEffect(() => {
     setIsBrowser(true);
-  }, []);
+    setStatus(columnData?.name);
+  }, [columnData]);
 
-  useEffect(() => {
-    setStatus(taskData?.status);
-  }, [taskData]);
-
-  const toggleViewTaskHandler = () => {
+  const toggleViewTaskCloseHandler = () => {
     dispatch(toggleViewTaskClose());
     setIsDotsOpen(false);
     setTimeout(router.back, 200);
@@ -62,8 +61,27 @@ export default function ViewTask(taskId, colId, boardId) {
     subtask.boardId = router.query.board;
     subtask.colId = router.query.column;
     subtask.taskId = router.query.task;
-    mutate(subtask);
+    mutateSubtask(subtask);
   };
+
+  useEffect(() => {
+    const colTo = currentBoard?.columns.find(
+      (column) => column.name === status
+    );
+
+    if (colTo?._id === router.query.column || !colTo) {
+      return;
+    }
+
+    const statusChangeData = {
+      boardId: router.query.board,
+      colId: router.query.column,
+      taskId: router.query.task,
+      colToId: colTo._id,
+    };
+    mutateStatus(statusChangeData);
+    dispatch(toggleViewTaskClose());
+  }, [status]);
 
   const editClickHandler = () => {
     //set current Task,
@@ -197,7 +215,7 @@ export default function ViewTask(taskId, colId, boardId) {
             duration: 0.2,
           }}
           className='absolute top-0 z-20 h-full w-full bg-[#000000] opacity-50'
-          onClick={toggleViewTaskHandler}
+          onClick={toggleViewTaskCloseHandler}
         ></motion.div>
       ) : null}
     </AnimatePresence>

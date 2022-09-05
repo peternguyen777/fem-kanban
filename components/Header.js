@@ -29,7 +29,6 @@ function Header() {
 
   const { data: currentBoard, isLoading } = useCurrentBoard(router.query.board);
 
-  console.log("isloading?", isLoading);
   const menuMobileToggleHandler = () => {
     if (sidebarOn) dispatch(toggleMenuMobile());
   };

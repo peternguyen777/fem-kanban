@@ -1,0 +1,164 @@
+use('pokemon');
+
+db.pokemon_collection.drop();
+
+db.pokemon_collection.insertOne(
+ {
+  "columns": [
+    {
+      "_id": "61cd90594947be000838f7c1",
+      "name": "John Doe",
+      "tasks": [
+        {
+          "_id": "61cd90594947be000838f7b2",
+          "type": "Full time",
+          "salary": 1010101
+        }
+      ]
+    },
+    {
+      "_id": "61cd90594947be000838f7c2",
+      "name": "Jane Austin",
+      "tasks": [
+        {
+          "_id": "61cd90594947be000838f7b3",
+          "type": "Part time",
+          "salary": 11011111
+        }
+      ]
+    },
+  ]
+
+ })
+
+db.pokemon_collection.updateOne({},
+[
+  {
+    $set: {
+      "columns": {
+        $map: {
+          input: "$columns",
+          as: "column",
+          in: {
+            $switch: {
+              branches: [
+                {
+                  case: {
+                    $eq: [
+                      // ID of the column to move data to
+                      "61cd90594947be000838f7c2",
+                      "$$column._id"
+                    ]
+                  },
+                  then: {
+                    $mergeObjects: [
+                      "$$column",
+                      {
+                        tasks: {
+                          $concatArrays: [
+                            "$$column.tasks",
+                            [
+                              {
+                                $function: {
+                                  body: "function(tasks) {if(!tasks._id) throw Error(\"[_id] is not valid!\");return tasks;}",
+                                  args: [
+                                    {
+                                      $reduce: {
+                                        input: {
+                                          $filter: {
+                                            input: "$columns",
+                                            as: "fromColumn",
+                                            cond: {
+                                              $eq: [
+                                                "$$fromColumn._id",
+                                                // ID of the data from which data is moved
+                                                "61cd90594947be000838f7c1",
+                                                
+                                              ]
+                                            }
+                                          }
+                                        },
+                                        initialValue: {},
+                                        in: {
+                                          $mergeObjects: [
+                                            "$$value",
+                                            {
+                                              $arrayElemAt: [
+                                                {
+                                                  $filter: {
+                                                    input: "$$this.tasks",
+                                                    as: "tasks",
+                                                    cond: {
+                                                      $eq: [
+                                                        "$$tasks._id",
+                                                        // ID of the element to move
+                                                        "61cd90594947be000838f7b2",
+                                                      ]
+                                                    }
+                                                  }
+                                                },
+                                                0
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  ],
+                                  lang: "js",
+                                  
+                                }
+                              }
+                            ]
+                          ],
+                          
+                        }
+                      }
+                    ]
+                  },
+                  
+                },
+                {
+                  case: {
+                    $eq: [
+                      // ID of the column from which to move data
+                      "61cd90594947be000838f7c1",
+                      "$$column._id"
+                    ]
+                  },
+                  then: {
+                    $mergeObjects: [
+                      "$$column",
+                      {
+                        tasks: {
+                          $filter: {
+                            input: "$$column.tasks",
+                            as: "tasks",
+                            cond: {
+                              $ne: [
+                                "$$tasks._id",
+                                // ID of the data to move
+                                "61cd90594947be000838f7b2",
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  
+                },
+                
+              ],
+              default: "$$column"
+            }
+          }
+        }
+      }, 
+    }
+  },
+])
+
+
+
+db.pokemon_collection.find({});

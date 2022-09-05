@@ -11,7 +11,7 @@ use('kanban');
 db.public.drop();
 
 // Insert a few documents into the sales collection.
-db.public.insert([
+db.public.insertMany([
   {
      "_id": ObjectId(),
       "name": "Platform Launch",

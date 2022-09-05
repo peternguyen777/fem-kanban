@@ -5,7 +5,7 @@ export default async function deleteTask(req, res) {
   try {
     const { db } = await connectToDatabase();
 
-    const { boardId, colId, taskId } = await JSON.parse(req.body);
+    const { boardId, colId, taskId } = await req.body;
 
     const result = await db.collection("public").updateOne(
       { _id: ObjectId(boardId) },

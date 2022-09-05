@@ -4,7 +4,7 @@ import { connectToDatabase } from "../../../util/mongodb";
 export default async function deleteBoard(req, res) {
   try {
     const { db } = await connectToDatabase();
-    const id = await JSON.parse(req.body);
+    const id = await req.body;
 
     const result = await db
       .collection("public")
