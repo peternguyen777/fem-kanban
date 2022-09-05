@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import { connectToDatabase } from "../../../util/mongodb";
 
-export default async function (req, res) {
+export default async function deleteTask(req, res) {
   try {
     const { db } = await connectToDatabase();
 

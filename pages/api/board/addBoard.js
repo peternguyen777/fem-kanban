@@ -2,7 +2,7 @@ import { connectToDatabase } from "../../../util/mongodb";
 import { randomColor } from "randomcolor";
 import { ObjectId } from "mongodb";
 
-export default async function (req, res) {
+export default async function addBoard(req, res) {
   try {
     const { db } = await connectToDatabase();
 

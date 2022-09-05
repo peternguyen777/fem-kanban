@@ -78,7 +78,7 @@ export default function EditTask() {
     setStatus(taskData?.status);
     const subtaskArr = taskData?.subtasks.map((task) => ({ task: task.title }));
     replace(subtaskArr);
-  }, [taskData]);
+  }, [taskData, replace, setValue]);
 
   const toggleEditTaskCloseHandler = () => {
     //close the modal

@@ -6,7 +6,7 @@ export default function Home({ boardData }) {
   const router = useRouter();
   useEffect(() => {
     router.push(`/public/${boardData?._id}`);
-  }, [boardData]);
+  }, [boardData, router]);
 }
 
 export async function getServerSideProps(context) {

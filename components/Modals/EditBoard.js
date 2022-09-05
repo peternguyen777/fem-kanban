@@ -72,7 +72,7 @@ export default function EditBoard() {
     } else {
       resetField("columns");
     }
-  }, [currentBoard]);
+  }, [currentBoard, replace, resetField, setValue]);
 
   const toggleEditBoardHandler = () => {
     dispatch(toggleEditBoardClose());
