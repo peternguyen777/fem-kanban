@@ -29,6 +29,7 @@ function Header() {
 
   const { data: currentBoard, isLoading } = useCurrentBoard(router.query.board);
 
+  console.log("isloading?", isLoading);
   const menuMobileToggleHandler = () => {
     if (sidebarOn) dispatch(toggleMenuMobile());
   };
@@ -83,7 +84,7 @@ function Header() {
           >
             {currentBoard?.name}
           </h2>
-          {!isLoading && menuMobileOpen ? (
+          {menuMobileOpen ? (
             <svg
               xmlns='http://www.w3.org/2000/svg'
               className='h-[7px] w-[10px] stroke-[#635FC7] stroke-2 md:hidden'
@@ -91,12 +92,14 @@ function Header() {
               <path fill='none' d='M9 6 5 2 1 6' />
             </svg>
           ) : (
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              className='h-[7px] w-[10px] stroke-[#635FC7] stroke-2 md:hidden'
-            >
-              <path fill='none' d='m1 1 4 4 4-4' />
-            </svg>
+            !isLoading && (
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-[7px] w-[10px] stroke-[#635FC7] stroke-2 md:hidden'
+              >
+                <path fill='none' d='m1 1 4 4 4-4' />
+              </svg>
+            )
           )}
         </div>
       </div>
