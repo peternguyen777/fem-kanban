@@ -1,33 +1,49 @@
+//react/next
 import React, { useState, useEffect } from "react";
-import kanbanData from "../../public/data.json";
-import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/router";
 import ReactDOM from "react-dom";
+import { AnimatePresence, motion } from "framer-motion";
+
+//JSX
+import Dropdown from "../UI/Dropdown";
+import ButtonSecondary from "../UI/ButtonSecondary";
+import ButtonPrimary from "../UI/ButtonPrimary";
+
+//redux
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectEditTaskIsVisible,
   toggleEditTaskClose,
 } from "../../store/uiSlice";
-import { selectCurrentBoard, selectCurrentTask } from "../../store/boardSlice";
-import Dropdown from "../UI/Dropdown";
 
 //reacthookform
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import taskValidation from "../../validation/taskValidation";
-import ButtonSecondary from "../UI/ButtonSecondary";
-import ButtonPrimary from "../UI/ButtonPrimary";
+
+//react-query
+import { useCurrentBoard } from "../../hooks/useQuery";
 
 export default function EditTask() {
-  const currentBoardId = useSelector(selectCurrentBoard);
-  const boardData = kanbanData.boards.find(
-    (board) => board.id === currentBoardId
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const {
+    data: currentBoard,
+    isLoading,
+    error,
+  } = useCurrentBoard(router.query.board);
+
+  const columnData = currentBoard?.columns.find(
+    (column) => column._id === router.query.column
   );
-  const taskData = useSelector(selectCurrentTask);
+  const taskData = columnData?.tasks.find(
+    (task) => task._id === router.query.task
+  );
 
   const [isBrowser, setIsBrowser] = useState(false);
   const [status, setStatus] = useState(taskData?.status);
 
-  const dispatch = useDispatch();
   const editTaskOpen = useSelector(selectEditTaskIsVisible);
 
   const {
@@ -57,10 +73,10 @@ export default function EditTask() {
   }, []);
 
   useEffect(() => {
-    setValue("title", taskData.title);
-    setValue("description", taskData.description);
-    setStatus(taskData.status);
-    const subtaskArr = taskData.subtasks?.map((task) => ({ task: task.title }));
+    setValue("title", taskData?.title);
+    setValue("description", taskData?.description);
+    setStatus(taskData?.status);
+    const subtaskArr = taskData?.subtasks.map((task) => ({ task: task.title }));
     replace(subtaskArr);
   }, [taskData]);
 
@@ -211,7 +227,7 @@ export default function EditTask() {
             </div>
 
             <Dropdown
-              boardData={boardData}
+              boardData={currentBoard}
               setStatus={setStatus}
               status={status}
             />

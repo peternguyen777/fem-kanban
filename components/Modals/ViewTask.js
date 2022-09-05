@@ -1,20 +1,24 @@
+//react/next
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
-import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+
+//jsx
+import Dropdown from "../UI/Dropdown";
+
+//redux
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectViewTaskIsVisible,
   toggleViewTaskClose,
   toggleEditTask,
   toggleDeleteTask,
 } from "../../store/uiSlice";
-import Dropdown from "../UI/Dropdown";
 
 //react-query
 import { useCurrentBoard } from "../../hooks/useQuery";
 import { useSubtaskClick } from "../../hooks/useMutationTask";
-import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
 
 export default function ViewTask(taskId, colId, boardId) {
   const router = useRouter();
@@ -131,13 +135,13 @@ export default function ViewTask(taskId, colId, boardId) {
               )}
             </div>
             <p className='bodyL mt-6 text-grey_medium'>
-              {taskData.description}
+              {taskData?.description}
             </p>
             <p className='bodyM mt-6 text-grey_medium dark:text-white'>
-              Subtasks ({completedTasks} of {taskData.subtasks.length})
+              Subtasks ({completedTasks} of {taskData?.subtasks.length})
             </p>
             <ul className='mt-4 space-y-2'>
-              {taskData.subtasks.map((task, i) => (
+              {taskData?.subtasks.map((task, i) => (
                 <div
                   key={i}
                   onClick={() => setSubtaskCompleteHandler(task)}

@@ -1,7 +1,8 @@
+//react/next
 import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
-import ReactDOM from "react-dom";
 
 //JSX
 import Dropdown from "../UI/Dropdown";
@@ -64,6 +65,10 @@ export default function AddTask() {
   useEffect(() => {
     setIsBrowser(true);
   }, []);
+
+  useEffect(() => {
+    setStatus(boardData?.columns[0]?.name);
+  }, [boardData]);
 
   const toggleAddTaskCloseHandler = () => {
     //reset react-hook-form fields & Dropdown custom component (Status)

@@ -1,8 +1,14 @@
+//react/next
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
+
+//jsx
+import ButtonSecondary from "../UI/ButtonSecondary";
+import ButtonPrimary from "../UI/ButtonPrimary";
+
+//redux
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectEditBoardIsVisible,
@@ -11,8 +17,6 @@ import {
 
 //reacthookform
 import { useForm, useFieldArray } from "react-hook-form";
-import ButtonSecondary from "../UI/ButtonSecondary";
-import ButtonPrimary from "../UI/ButtonPrimary";
 
 //react-query
 import { useCurrentBoard } from "../../hooks/useQuery";

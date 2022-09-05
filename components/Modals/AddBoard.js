@@ -1,6 +1,13 @@
+//react/next
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
+
+//jsx
+import ButtonSecondary from "../UI/ButtonSecondary";
+import ButtonPrimary from "../UI/ButtonPrimary";
+
+//redux
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectAddBoardIsVisible,
@@ -9,12 +16,8 @@ import {
 
 //reacthookform
 import { useForm, useFieldArray } from "react-hook-form";
-import ButtonSecondary from "../UI/ButtonSecondary";
-import ButtonPrimary from "../UI/ButtonPrimary";
 
 //react-query
-// import { useAddBoard } from "../../hooks/useAllBoards";
-
 import { useAddBoard } from "../../hooks/useMutation";
 
 export default function AddBoard() {

@@ -7,9 +7,7 @@ export default async function (req, res) {
 
     const { boardId, colId, taskId } = await JSON.parse(req.body);
 
-    console.log(boardId, taskId);
-
-    const result = await db.collection("public").update(
+    const result = await db.collection("public").updateOne(
       { _id: ObjectId(boardId) },
       {
         $pull: { "columns.$[].tasks": { _id: ObjectId(taskId) } },

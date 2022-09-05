@@ -1,17 +1,22 @@
+//react/next
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactDOM from "react-dom";
+
+//jsx
+import ButtonSecondary from "../UI/ButtonSecondary";
+import ButtonDestructive from "../UI/ButtonDestructive";
+
+//redux
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectDeleteTaskIsVisible,
   toggleDeleteTaskClose,
 } from "../../store/uiSlice";
-import { selectCurrentTask } from "../../store/boardSlice";
 
-import ButtonSecondary from "../UI/ButtonSecondary";
-import ButtonDestructive from "../UI/ButtonDestructive";
-
+//react-query
+import { useCurrentBoard } from "../../hooks/useQuery";
 import { useDeleteTask } from "../../hooks/useMutationTask";
 
 export default function EditBoard() {
@@ -20,8 +25,19 @@ export default function EditBoard() {
 
   const dispatch = useDispatch();
   const deleteTaskOpen = useSelector(selectDeleteTaskIsVisible);
-  const currentTask = useSelector(selectCurrentTask);
 
+  const {
+    data: currentBoard,
+    isLoading,
+    error,
+  } = useCurrentBoard(router.query.board);
+
+  const columnData = currentBoard?.columns.find(
+    (column) => column._id === router.query.column
+  );
+  const taskData = columnData?.tasks.find(
+    (task) => task._id === router.query.task
+  );
   const { mutate } = useDeleteTask();
 
   useEffect(() => {
@@ -29,13 +45,13 @@ export default function EditBoard() {
   }, []);
 
   const deleteTaskHandler = () => {
-    const taskData = {
+    const data = {
       boardId: router.query.board,
       colId: router.query.column,
       taskId: router.query.task,
     };
 
-    mutate(taskData);
+    mutate(data);
     dispatch(toggleDeleteTaskClose());
   };
 
@@ -57,7 +73,7 @@ export default function EditBoard() {
         >
           <h2 className='text-red_main'>Delete this task?</h2>
           <p className='bodyL mt-6 text-grey_medium'>
-            Are you sure you want to delete the &apos;{currentTask.title}&apos;
+            Are you sure you want to delete the &apos;{taskData?.title}&apos;
             task and its subtasks? This action cannot be reversed.
           </p>
 

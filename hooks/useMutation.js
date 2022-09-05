@@ -42,7 +42,7 @@ export const useAddBoard = () => {
 
   return useMutation(addBoard, {
     onSuccess: (newBoard) => {
-      queryClient.invalidateQueries("allBoards");
+      queryClient.invalidateQueries();
       router.push(`/public/${newBoard.createBoard.insertedId}`);
     },
   });
