@@ -1,9 +1,9 @@
 import "../styles/globals.css";
 import { ThemeProvider } from "next-themes";
+import { SessionProvider } from "next-auth/react";
 import { Provider } from "react-redux";
 import store from "../store";
 import { QueryClient, QueryClientProvider } from "react-query";
-
 import { useRouter } from "next/router";
 
 import Header from "../components/Header";
@@ -20,42 +20,44 @@ import DeleteBoard from "../components/Modals/DeleteBoard";
 
 const queryClient = new QueryClient();
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter();
 
   return (
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider
-          defaultTheme='system'
-          enableSystem={true}
-          attribute='class'
-        >
-          {/* Portals */}
-          {router.query.task && <ViewTask />}
+    <SessionProvider session={session}>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider
+            defaultTheme='system'
+            enableSystem={true}
+            attribute='class'
+          >
+            {/* Portals */}
+            {router.query.task && <ViewTask />}
 
-          <MenuMobile />
-          <AddTask />
-          <EditTask />
-          <DeleteTask />
-          <AddBoard />
-          <EditBoard />
-          <DeleteBoard />
+            <MenuMobile />
+            <AddTask />
+            <EditTask />
+            <DeleteTask />
+            <AddBoard />
+            <EditBoard />
+            <DeleteBoard />
 
-          {/* Sidebar Toggle */}
-          <SidebarToggle />
+            {/* Sidebar Toggle */}
+            <SidebarToggle />
 
-          {/* Main */}
-          <div className='flex min-h-screen'>
-            <MenuDesktop />
-            <div className='flex-1'>
-              <Header />
-              <Component {...pageProps} />
+            {/* Main */}
+            <div className='flex min-h-screen'>
+              <MenuDesktop />
+              <div className='flex-1'>
+                <Header />
+                <Component {...pageProps} />
+              </div>
             </div>
-          </div>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </Provider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </Provider>
+    </SessionProvider>
   );
 }
 

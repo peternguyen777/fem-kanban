@@ -138,6 +138,7 @@ function MenuDesktop() {
       </div>
       <div>
         <ToggleLightDark />
+
         <div
           onClick={toggleMenuCloseHandler}
           className='group mt-2 mb-8 grid h-12 w-[240px] cursor-pointer items-center rounded-r-full transition duration-150 hover:bg-purple_main/10  hover:dark:bg-white'

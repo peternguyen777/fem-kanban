@@ -61,7 +61,6 @@ export default function ViewTask(taskId, colId, boardId) {
     subtask.boardId = router.query.board;
     subtask.colId = router.query.column;
     subtask.taskId = router.query.task;
-
     mutateSubtask(subtask);
   };
 
