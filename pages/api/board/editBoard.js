@@ -9,17 +9,27 @@ export default async function editBoard(req, res) {
       editBoard: { columns, name, _id },
     } = req.body;
 
-    // const colNames = columns.map((col) => col.name);
+    for (let i = 0; i < columns.length; i++) {
+      if (!columns[i].hasOwnProperty("_id")) {
+        columns[i]._id = ObjectId();
+        for (let j = 0; j < columns[i].tasks.length; j++) {
+          columns[i].tasks[j]._id = ObjectId(columns[i].tasks[j]._id);
+        }
+      } else if (columns[i].hasOwnProperty("_id")) {
+        columns[i]._id = ObjectId(columns[i]._id);
+        for (let j = 0; j < columns[i].tasks.length; j++) {
+          columns[i].tasks[j]._id = ObjectId(columns[i].tasks[j]._id);
+        }
+      }
+    }
 
     const result = await db.collection("public").updateOne(
       { _id: ObjectId(_id) },
       {
         $set: {
           name: name,
+          columns: columns,
         },
-        // $set: {
-        //   "columns.$[].name": columns.name,
-        // },
       }
     );
 

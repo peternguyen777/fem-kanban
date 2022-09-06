@@ -61,6 +61,7 @@ export default function ViewTask(taskId, colId, boardId) {
     subtask.boardId = router.query.board;
     subtask.colId = router.query.column;
     subtask.taskId = router.query.task;
+    console.log(subtask);
     mutateSubtask(subtask);
   };
 
@@ -79,6 +80,7 @@ export default function ViewTask(taskId, colId, boardId) {
       taskId: router.query.task,
       colToId: colTo._id,
     };
+
     mutateStatus(statusChangeData);
     dispatch(toggleViewTaskClose());
   }, [status]);
@@ -163,7 +165,7 @@ export default function ViewTask(taskId, colId, boardId) {
                 <div
                   key={i}
                   onClick={() => setSubtaskCompleteHandler(task)}
-                  className='flex cursor-pointer rounded-[4px] bg-grey_light py-4 pl-3 pr-2 hover:bg-purple_main/25 dark:bg-grey_verydark'
+                  className='flex cursor-pointer rounded-[4px] bg-grey_light py-4 pl-3 pr-2 hover:bg-purple_main/25 dark:bg-grey_verydark dark:hover:bg-purple_main/25'
                 >
                   <div
                     className={`mr-4 grid h-4 w-4 flex-none items-center justify-center rounded-[2px] border ${

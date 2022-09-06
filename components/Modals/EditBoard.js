@@ -22,6 +22,8 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { useCurrentBoard } from "../../hooks/useQuery";
 import { useEditBoard } from "../../hooks/useMutation";
 
+import { randomColor } from "randomcolor";
+
 export default function EditBoard() {
   const router = useRouter();
   const [isBrowser, setIsBrowser] = useState(false);
@@ -79,12 +81,46 @@ export default function EditBoard() {
   };
 
   const onSubmit = (data) => {
-    data.columns = data.columns.filter((str) => str.name.trim() !== "");
-    dispatch(toggleEditBoardClose());
-
-    console.log(data);
     data._id = currentBoard._id;
+    data.columns = data.columns.filter((str) => str.name.trim() !== "");
 
+    //map existing _id to new columns array
+
+    var newCols = currentBoard.columns.slice();
+
+    if (data.columns.length < currentBoard.columns.length) {
+      //change name of existing cols and remove the end columns.
+      for (let i = 0; i < currentBoard.columns.length; i++) {
+        if (i < data.columns.length) {
+          newCols[i].name = data.columns[i].name;
+        } else {
+          newCols.pop();
+        }
+      }
+    } else if (data.columns.length === currentBoard.columns.length) {
+      //change name of existing cols 1 to 1.
+      newCols = currentBoard.columns.map((col, i) => ({
+        ...col,
+        name: data.columns[i].name,
+      }));
+    } else {
+      //add empty columns, with new random color and empty task array. objectid added in backend.
+      for (let i = 0; i < data.columns.length; i++) {
+        if (i < currentBoard.columns.length) {
+          newCols[i].name = data.columns[i].name;
+        } else {
+          newCols.push({
+            name: data.columns[i].name,
+            color: randomColor(),
+            tasks: [],
+          });
+        }
+      }
+    }
+
+    data.columns = newCols;
+
+    dispatch(toggleEditBoardClose());
     mutate(data);
   };
 

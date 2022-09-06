@@ -14,6 +14,7 @@ export default async function addBoard(req, res) {
       ...col,
       color: randomColor(),
       _id: ObjectId(),
+      tasks: [],
     }));
 
     const result = await db

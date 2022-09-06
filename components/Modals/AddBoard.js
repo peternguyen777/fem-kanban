@@ -58,6 +58,7 @@ export default function AddBoard() {
     data.columns = data.columns.filter((str) => str.name.trim() !== "");
     reset();
     dispatch(toggleAddBoardClose());
+
     mutate(data);
   };
 

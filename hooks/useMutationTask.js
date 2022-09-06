@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
 const addTask = async (taskData) => {
   const response = await fetch("/api/task/addTask", {
