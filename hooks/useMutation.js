@@ -44,10 +44,6 @@ export const useAddBoard = () => {
   const router = useRouter();
 
   return useMutation(addBoard, {
-    // onSuccess: (newBoard) => {
-    //   queryClient.invalidateQueries();
-    //   router.push(`/public/${newBoard.createBoard.insertedId}`);
-    // },
     onMutate: (newData) => {
       queryClient.cancelQueries("allBoards");
       const current = queryClient.getQueryData("allBoards");
@@ -59,7 +55,10 @@ export const useAddBoard = () => {
       return current;
     },
     onError: (error, newData, rollback) => rollback(),
-    onSettled: () => queryClient.invalidateQueries("allBoards"),
+    onSettled: (newBoard) => {
+      queryClient.invalidateQueries("allBoards");
+      router.push(`/public/${newBoard.createBoard.insertedId}`);
+    },
   });
 };
 
@@ -77,7 +76,20 @@ export const useDeleteBoard = () => {
   const queryClient = useQueryClient();
 
   return useMutation(deleteBoard, {
-    onSuccess: () => {
+    // onSuccess: () => {
+    //   queryClient.invalidateQueries("allBoards");
+    // },
+    onMutate: (newData) => {
+      queryClient.cancelQueries("allBoards");
+      const current = queryClient.getQueryData("allBoards");
+      queryClient.setQueryData("allBoards", (prev) =>
+        prev.filter((item) => item._id !== newData)
+      );
+
+      return current;
+    },
+    onError: (error, newData, rollback) => rollback(),
+    onSettled: () => {
       queryClient.invalidateQueries("allBoards");
     },
   });
