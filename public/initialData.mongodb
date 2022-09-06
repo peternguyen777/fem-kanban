@@ -482,67 +482,7 @@ db.public.insertMany([
         }
       ]
     },
-    {
-     "_id": ObjectId(),
-      "name": "Dummy board",
-      "columns": [
-        {
-          "_id": ObjectId(),
-          "name": "Now",
-          "color": "#49C4E5",
-          "tasks": [
-            {
-              "_id": ObjectId(),
-              "title": "Launch version one",
-              "description": "",
-              "status": "Now",
-              "subtasks": [
-                {
-                  "title": "Launch privately to our waitlist",
-                  "isCompleted": false
-                },
-                {
-                  "title": "Launch publicly on PH, HN, etc.",
-                  "isCompleted": false
-                }
-              ]
-            },
-            {
-              "_id": ObjectId(),
-              "title": "Review early feedback and plan next steps for roadmap",
-              "description": "Beyond the initial launch, we're keeping the initial roadmap completely empty. This meeting will help us plan out our next steps based on actual customer feedback.",
-              "status": "Now",
-              "subtasks": [
-                {
-                  "title": "Interview 10 customers",
-                  "isCompleted": false
-                },
-                {
-                  "title": "Review common customer pain points and suggestions",
-                  "isCompleted": false
-                },
-                {
-                  "title": "Outline next steps for our roadmap",
-                  "isCompleted": false
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "_id": ObjectId(),
-          "name": "Next",
-          "color": "#8471F2",
-          "tasks": []
-        },
-        {
-          "_id": ObjectId(),
-          "name": "Later",
-          "color": "#67E2AE",
-          "tasks": []
-        }
-      ]
-    }
+    
 ]);
 
 

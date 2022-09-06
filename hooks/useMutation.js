@@ -44,10 +44,22 @@ export const useAddBoard = () => {
   const router = useRouter();
 
   return useMutation(addBoard, {
-    onSuccess: (newBoard) => {
-      queryClient.invalidateQueries();
-      router.push(`/public/${newBoard.createBoard.insertedId}`);
+    // onSuccess: (newBoard) => {
+    //   queryClient.invalidateQueries();
+    //   router.push(`/public/${newBoard.createBoard.insertedId}`);
+    // },
+    onMutate: (newData) => {
+      queryClient.cancelQueries("allBoards");
+      const current = queryClient.getQueryData("allBoards");
+      queryClient.setQueryData("allBoards", (prev) => [
+        ...prev,
+        { name: newData.name, _id: new Date().toISOString() },
+      ]);
+
+      return current;
     },
+    onError: (error, newData, rollback) => rollback(),
+    onSettled: () => queryClient.invalidateQueries("allBoards"),
   });
 };
 

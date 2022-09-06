@@ -10,16 +10,13 @@ export default async function editBoard(req, res) {
     } = req.body;
 
     for (let i = 0; i < columns.length; i++) {
+      for (let j = 0; j < columns[i].tasks.length; j++) {
+        columns[i].tasks[j]._id = ObjectId(columns[i].tasks[j]._id);
+      }
       if (!columns[i].hasOwnProperty("_id")) {
         columns[i]._id = ObjectId();
-        for (let j = 0; j < columns[i].tasks.length; j++) {
-          columns[i].tasks[j]._id = ObjectId(columns[i].tasks[j]._id);
-        }
-      } else if (columns[i].hasOwnProperty("_id")) {
+      } else {
         columns[i]._id = ObjectId(columns[i]._id);
-        for (let j = 0; j < columns[i].tasks.length; j++) {
-          columns[i].tasks[j]._id = ObjectId(columns[i].tasks[j]._id);
-        }
       }
     }
 
