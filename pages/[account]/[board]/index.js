@@ -110,7 +110,7 @@ export default function Home() {
     <div
       className={`absolute h-[calc(100vh-64px)] ${
         menuDesktopOpen && `md:w-[calc(100vw-261px)] lg:w-[calc(100vw-301px)]`
-      } w-screen snap-x snap-mandatory scroll-pl-4 overflow-scroll px-4 pt-6 pb-[70px] md:h-[calc(100vh-81px)] md:scroll-pl-6 md:px-6 lg:h-[calc(100vh-97px)]`}
+      } w-screen snap-x snap-mandatory scroll-pl-14 overflow-scroll px-4 pt-6 pb-[70px] md:h-[calc(100vh-81px)] md:scroll-pl-6 md:px-6 lg:h-[calc(100vh-97px)]`}
     >
       <Head>
         <title>Kanban</title>
