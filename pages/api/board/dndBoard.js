@@ -5,17 +5,25 @@ export default async function dndBoard(req, res) {
   try {
     const { db } = await connectToDatabase();
 
-    const { dndBoard } = req.body;
+    const {
+      dndBoard: { columns, _id },
+    } = req.body;
 
-    // const result = await db.collection("public").updateOne(
-    //   { _id: ObjectId(_id) },
-    //   {
-    //     $set: {
-    //       name: name,
-    //       columns: columns,
-    //     },
-    //   }
-    // );
+    for (let i = 0; i < columns.length; i++) {
+      for (let j = 0; j < columns[i].tasks.length; j++) {
+        columns[i].tasks[j]._id = ObjectId(columns[i].tasks[j]._id);
+      }
+      columns[i]._id = ObjectId(columns[i]._id);
+    }
+
+    const result = await db.collection("public").updateOne(
+      { _id: ObjectId(_id) },
+      {
+        $set: {
+          columns: columns,
+        },
+      }
+    );
 
     res.status(200);
     res.json({ dndBoard: result });
