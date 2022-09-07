@@ -204,7 +204,7 @@ export default function Home() {
           </DragDropContext>
           <div className='mt-[39px] h-auto w-[296px] flex-none snap-start md:w-[304px] '>
             <div
-              className='grid h-[calc(100%-20px)] min-h-[300px] w-[280px] cursor-pointer items-center rounded-md bg-[#E9EFFA] text-center dark:bg-grey_dark'
+              className='grid h-[300px] min-h-[300px] w-[280px] cursor-pointer items-center rounded-md bg-[#E9EFFA] text-center dark:bg-grey_dark md:h-[calc(100%-20px)]'
               onClick={editBoardHandler}
             >
               <h1 className='select-none text-grey_medium hover:text-purple_main'>
