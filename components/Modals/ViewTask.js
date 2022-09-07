@@ -20,7 +20,7 @@ import {
 import { useCurrentBoard } from "../../hooks/useQuery";
 import { useSubtaskClick, useStatusChange } from "../../hooks/useMutationTask";
 
-export default function ViewTask(taskId, colId, boardId) {
+export default function ViewTask() {
   const router = useRouter();
   const dispatch = useDispatch();
   const {

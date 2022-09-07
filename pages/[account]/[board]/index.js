@@ -17,6 +17,11 @@ import {
 //react-query
 import { useCurrentBoard } from "../../../hooks/useQuery";
 
+//react beautiful dnd
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useEffect } from "react";
+import { setColumns, selectColumns } from "../../../store/boardSlice";
+
 export default function Home() {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -25,11 +30,72 @@ export default function Home() {
   const {
     data: currentBoard,
     isLoading,
+
     error,
   } = useCurrentBoard(router.query.board);
 
+  useEffect(() => {
+    dispatch(setColumns(currentBoard?.columns));
+  }, [currentBoard]);
+
+  const columns = useSelector(selectColumns);
+
   const editBoardHandler = () => {
     dispatch(toggleEditBoard());
+  };
+
+  const onDragEnd = (result, columns, setColumns) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
+
+    if (source.droppableId !== destination.droppableId) {
+      const newColumns = [...columns];
+      const sourceColumn = newColumns.find(
+        (column) => column._id === source.droppableId
+      );
+      const destColumn = newColumns.find(
+        (column) => column._id === destination.droppableId
+      );
+      const sourceTasks = [...sourceColumn.tasks];
+      const destTasks = [...destColumn.tasks];
+      const [removed] = sourceTasks.splice(source.index, 1);
+      destTasks.splice(destination.index, 0, removed);
+
+      const updatedSourceColumn = { ...sourceColumn };
+      const updatedDestColumn = { ...destColumn };
+
+      updatedSourceColumn.tasks = sourceTasks;
+      updatedDestColumn.tasks = destTasks;
+
+      const sourceIndex = newColumns.findIndex(
+        (column) => column._id === source.droppableId
+      );
+      const destIndex = newColumns.findIndex(
+        (column) => column._id === destination.droppableId
+      );
+      newColumns[sourceIndex] = updatedSourceColumn;
+      newColumns[destIndex] = updatedDestColumn;
+
+      dispatch(setColumns(newColumns));
+    } else {
+      const newColumns = [...columns];
+      const column = newColumns.find(
+        (column) => column._id === source.droppableId
+      );
+
+      const copiedTasks = [...column.tasks];
+      const [removed] = copiedTasks.splice(source.index, 1);
+      copiedTasks.splice(destination.index, 0, removed);
+
+      const updatedColumn = { ...column };
+      updatedColumn.tasks = copiedTasks;
+      const indexToUpdate = newColumns.findIndex(
+        (column) => column._id === source.droppableId
+      );
+
+      newColumns[indexToUpdate] = updatedColumn;
+      dispatch(setColumns(newColumns));
+    }
   };
 
   return (
@@ -47,47 +113,79 @@ export default function Home() {
         <BoardEmpty />
       ) : (
         <div className='flex space-x-6 '>
-          {currentBoard?.columns.map((item, i) => (
-            <div key={i} className=' w-[280px] flex-none snap-start'>
-              <div className='flex'>
-                <div
-                  className={`mr-3 h-[15px] w-[15px] rounded-full`}
-                  style={{ backgroundColor: item?.color }}
-                />
+          <DragDropContext
+            onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+          >
+            {columns?.map((column) => (
+              <div key={column._id} className=' w-[280px] flex-none snap-start'>
+                <div className='flex'>
+                  <div
+                    className={`mr-3 h-[15px] w-[15px] rounded-full`}
+                    style={{ backgroundColor: column?.color }}
+                  />
 
-                <h4 className='uppercase'>
-                  {item.name} ({item.tasks?.length || 0})
-                </h4>
-              </div>
-              <ul className='mt-6 space-y-5'>
-                {item.tasks?.map((task) => {
-                  var completedTasks = 0;
-                  task.subtasks.forEach((item) => {
-                    if (item.isCompleted) {
-                      completedTasks++;
-                    }
-                  });
-
-                  return (
-                    <Link
-                      key={task._id}
-                      href={`/public/${currentBoard._id}/?column=${item._id}&task=${task._id}`}
-                    >
+                  <h4 className='uppercase'>
+                    {column.name} ({column.tasks?.length || 0})
+                  </h4>
+                </div>
+                <Droppable droppableId={column._id} key={column._id}>
+                  {(provided, snapshot) => {
+                    return (
                       <div
-                        onClick={() => dispatch(toggleViewTask())}
-                        className='cursor-pointer select-none rounded-lg bg-white px-4 py-6 shadow-md dark:bg-grey_dark'
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        className='mt-6 space-y-5'
                       >
-                        <h3>{task.title}</h3>
-                        <p className='bodyM mt-2 text-grey_medium'>
-                          {completedTasks} of {task.subtasks.length} subtasks
-                        </p>
+                        {column.tasks?.map((task, index) => {
+                          var completedTasks = 0;
+                          task?.subtasks.forEach((item) => {
+                            if (item.isCompleted) {
+                              completedTasks++;
+                            }
+                          });
+
+                          return (
+                            <Draggable
+                              key={task?._id}
+                              draggableId={task?._id}
+                              index={index}
+                            >
+                              {(provided, snapshot) => {
+                                return (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    className={`${
+                                      snapshot.isDragging &&
+                                      `ring-2 ring-purple_main`
+                                    } cursor-pointer select-none rounded-lg bg-white px-4 py-6 shadow-md dark:bg-grey_dark`}
+                                    onClick={() => {
+                                      dispatch(toggleViewTask());
+                                      router.push(
+                                        `/public/${currentBoard._id}/?column=${column._id}&task=${task._id}`
+                                      );
+                                    }}
+                                  >
+                                    <h3>{task?.title}</h3>
+                                    <p className='bodyM mt-2 text-grey_medium'>
+                                      {completedTasks} of{" "}
+                                      {task?.subtasks.length} subtasks
+                                    </p>
+                                  </div>
+                                );
+                              }}
+                            </Draggable>
+                          );
+                        })}
+                        {provided.placeholder}
                       </div>
-                    </Link>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
+                    );
+                  }}
+                </Droppable>
+              </div>
+            ))}
+          </DragDropContext>
           <div className='mt-[39px] h-auto w-[296px] flex-none snap-start md:w-[304px] '>
             <div
               className='grid h-full min-h-[200px] w-[280px] cursor-pointer items-center rounded-md bg-[#E9EFFA] text-center dark:bg-grey_dark'
@@ -102,4 +200,16 @@ export default function Home() {
       )}
     </div>
   );
+}
+
+{
+  /* <Link
+  key={task._id}
+  href={`/public/${currentBoard._id}/?column=${column._id}&task=${task._id}`}
+>
+  <div
+    onClick={() => dispatch(toggleViewTask())}
+    className='cursor-pointer select-none rounded-lg bg-white px-4 py-6 shadow-md dark:bg-grey_dark'
+  ></div>
+</Link>; */
 }

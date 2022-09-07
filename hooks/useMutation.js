@@ -39,6 +39,19 @@ const deleteBoard = async (id) => {
   return data;
 };
 
+const dndBoard = async (boardData) => {
+  const response = await fetch("/api/board/dndBoard", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ dndBoard: boardData }),
+  });
+  const data = await response.json();
+
+  return data;
+};
+
 export const useAddBoard = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -91,6 +104,16 @@ export const useDeleteBoard = () => {
     onError: (error, newData, rollback) => rollback(),
     onSettled: () => {
       queryClient.invalidateQueries("allBoards");
+    },
+  });
+};
+
+export const useDndBoard = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(dndBoard, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("currentBoard");
     },
   });
 };

@@ -14,9 +14,15 @@ const fetchCurrentBoard = async (key) => {
 };
 
 export const useFetchAllBoards = () => {
-  return useQuery("allBoards", fetchAllBoards);
+  return useQuery("allBoards", fetchAllBoards, {
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
 };
 
 export const useCurrentBoard = (id) => {
-  return useQuery(["currentBoard", id], fetchCurrentBoard);
+  return useQuery(["currentBoard", id], fetchCurrentBoard, {
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
 };
