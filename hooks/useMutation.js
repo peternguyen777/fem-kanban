@@ -113,7 +113,7 @@ export const useDndBoard = () => {
 
   return useMutation(dndBoard, {
     onSuccess: () => {
-      queryClient.invalidateQueries();
+      queryClient.invalidateQueries("currentBoard");
     },
   });
 };

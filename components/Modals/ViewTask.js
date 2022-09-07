@@ -58,10 +58,11 @@ export default function ViewTask() {
 
   const setSubtaskCompleteHandler = (subtask) => {
     //change subtask complete
-    subtask.boardId = router.query.board;
-    subtask.colId = router.query.column;
-    subtask.taskId = router.query.task;
-    mutateSubtask(subtask);
+    const subtaskData = { ...subtask };
+    subtaskData.boardId = router.query.board;
+    subtaskData.colId = router.query.column;
+    subtaskData.taskId = router.query.task;
+    mutateSubtask(subtaskData);
   };
 
   useEffect(() => {

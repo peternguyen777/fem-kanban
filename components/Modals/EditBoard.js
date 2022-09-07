@@ -86,7 +86,8 @@ export default function EditBoard() {
 
     //map existing _id to new columns array
 
-    var newCols = currentBoard.columns.slice();
+    // var newCols = currentBoard.columns.slice();
+    var newCols = JSON.parse(JSON.stringify(currentBoard.columns));
 
     if (data.columns.length < currentBoard.columns.length) {
       //change name of existing cols and remove the end columns.
