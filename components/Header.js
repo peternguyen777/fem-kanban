@@ -56,7 +56,7 @@ function Header() {
   };
 
   return (
-    <header className='sticky z-10 flex h-16 select-none items-center justify-between bg-white px-4 transition-colors dark:bg-grey_dark md:h-[80px] md:border-b md:border-lines_light md:px-6 md:dark:border-lines_dark lg:h-[96px]'>
+    <header className='sticky z-10 flex h-16 select-none items-center justify-between bg-white px-4 shadow-md transition-colors dark:bg-grey_dark md:h-[80px] md:border-b md:border-lines_light md:px-6 md:shadow-none md:dark:border-lines_dark lg:h-[96px]'>
       <div className='flex h-full items-center'>
         {menuDesktopOpen ? (
           <div className='md:hidden'>

@@ -19,6 +19,7 @@ import {
 //react-query
 import { useCurrentBoard } from "../../hooks/useQuery";
 import { useSubtaskClick, useStatusChange } from "../../hooks/useMutationTask";
+import Underlay from "./Underlay";
 
 export default function ViewTask() {
   const router = useRouter();
@@ -208,18 +209,7 @@ export default function ViewTask() {
 
   const underlayContent = (
     <AnimatePresence>
-      {viewTaskOpen ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
-          exit={{ opacity: 0 }}
-          transition={{
-            duration: 0.2,
-          }}
-          className='absolute top-0 z-20 h-full w-full bg-[#000000] opacity-50'
-          onClick={toggleViewTaskCloseHandler}
-        ></motion.div>
-      ) : null}
+      {viewTaskOpen ? <Underlay onClick={toggleViewTaskCloseHandler} /> : null}
     </AnimatePresence>
   );
 

@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Dropdown from "../UI/Dropdown";
 import ButtonSecondary from "../UI/ButtonSecondary";
 import ButtonPrimary from "../UI/ButtonPrimary";
+import Underlay from "./Underlay";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -231,18 +232,7 @@ export default function AddTask() {
 
   const underlayContent = (
     <AnimatePresence>
-      {addTaskOpen ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
-          exit={{ opacity: 0 }}
-          transition={{
-            duration: 0.2,
-          }}
-          className='absolute top-0 z-20 h-full w-full bg-[#000000] opacity-50'
-          onClick={toggleAddTaskCloseHandler}
-        ></motion.div>
-      ) : null}
+      {addTaskOpen ? <Underlay onClick={toggleAddTaskCloseHandler} /> : null}
     </AnimatePresence>
   );
 

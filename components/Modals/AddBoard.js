@@ -19,6 +19,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 
 //react-query
 import { useAddBoard } from "../../hooks/useMutation";
+import Underlay from "./Underlay";
 
 export default function AddBoard() {
   const [isBrowser, setIsBrowser] = useState(false);
@@ -156,18 +157,7 @@ export default function AddBoard() {
 
   const underlayContent = (
     <AnimatePresence>
-      {addBoardOpen ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
-          exit={{ opacity: 0 }}
-          transition={{
-            duration: 0.2,
-          }}
-          className='absolute top-0 z-20 h-screen w-full bg-[#000000] opacity-50'
-          onClick={toggleAddBoardHandler}
-        ></motion.div>
-      ) : null}
+      {addBoardOpen ? <Underlay onClick={toggleAddBoardHandler} /> : null}
     </AnimatePresence>
   );
 
