@@ -484,5 +484,5 @@ db.public.insertMany([
     },
     
 ]);
-db.public.find({}).sort({ name: 1 })
+db.public.find({})
 
