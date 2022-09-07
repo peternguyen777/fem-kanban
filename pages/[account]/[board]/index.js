@@ -39,14 +39,14 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(setColumns(currentBoard?.columns));
-  }, [currentBoard]);
+  }, [currentBoard, dispatch]);
 
   useEffect(() => {
     let newBoard = { ...currentBoard };
     newBoard.columns = columns;
 
     mutate(newBoard);
-  }, [columns]);
+  }, [columns, mutate]);
 
   const editBoardHandler = () => {
     dispatch(toggleEditBoard());

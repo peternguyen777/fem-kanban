@@ -87,6 +87,7 @@ export const useEditBoard = () => {
 
 export const useDeleteBoard = () => {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation(deleteBoard, {
     // onSuccess: () => {
@@ -104,6 +105,7 @@ export const useDeleteBoard = () => {
     onError: (error, newData, rollback) => rollback(),
     onSettled: () => {
       queryClient.invalidateQueries("allBoards");
+      router.push("/");
     },
   });
 };

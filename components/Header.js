@@ -18,8 +18,6 @@ import {
 
 import { useCurrentBoard } from "../hooks/useQuery";
 import { Modal } from "./Modals/modal";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 
 function Header() {
   const router = useRouter();
@@ -83,7 +81,7 @@ function Header() {
               menuDesktopOpen ? `md:ml-0` : `md:ml-6`
             } md:text-[20px] md:leading-[25px]`}
           >
-            {currentBoard?.name || <Skeleton />}
+            {currentBoard?.name}
           </h2>
           {menuMobileOpen ? (
             <svg

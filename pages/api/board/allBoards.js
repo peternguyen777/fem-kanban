@@ -8,7 +8,7 @@ export default async function getAllBoards(req, res) {
       .collection("public")
       .find({})
       .sort({ name: 1 })
-      .project({ _id: 1, name: 1, slug: 1 })
+      .project({ _id: 1, name: 1 })
       .toArray();
 
     res.json({ allBoards });

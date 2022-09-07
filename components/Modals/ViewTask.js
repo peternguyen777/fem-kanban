@@ -83,7 +83,7 @@ export default function ViewTask() {
 
     mutateStatus(statusChangeData);
     dispatch(toggleViewTaskClose());
-  }, [status]);
+  }, [status, dispatch, mutateStatus]);
 
   const editClickHandler = () => {
     //set current Task,
