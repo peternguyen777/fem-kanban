@@ -164,7 +164,7 @@ export default function AddBoard() {
           transition={{
             duration: 0.2,
           }}
-          className='absolute top-0 z-20 h-full w-full bg-[#000000] opacity-50'
+          className='absolute top-0 z-20 h-screen w-full bg-[#000000] opacity-50'
           onClick={toggleAddBoardHandler}
         ></motion.div>
       ) : null}
