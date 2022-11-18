@@ -1,27 +1,16 @@
-//Next/React
 import Head from "next/head";
 import { useRouter } from "next/router";
-
-//JSX
-import BoardEmpty from "../../../components/UI/BoardEmpty";
-
-//redux
-import { useSelector, useDispatch } from "react-redux";
-import {
-  selectMenuDesktopIsVisible,
-  toggleViewTask,
-  toggleEditBoard,
-} from "../../../store/uiSlice";
-
-//react-query
-import { useCurrentBoard } from "../../../hooks/useQuery";
-import { useDndBoard } from "../../../hooks/useMutation";
-
-//react beautiful dnd
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect } from "react";
-import { setColumns, selectColumns } from "../../../store/boardSlice";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { useDispatch, useSelector } from "react-redux";
+import BoardEmpty from "../../../components/UI/BoardEmpty";
 import LoadingSpinner from "../../../components/UI/LoadingSpinner";
+import { useDndBoard } from "../../../hooks/useMutation";
+import { useCurrentBoard } from "../../../hooks/useQuery";
+import { selectColumns, setColumns } from "../../../store/boardSlice";
+import {
+  selectMenuDesktopIsVisible, toggleEditBoard, toggleViewTask
+} from "../../../store/uiSlice";
 
 export default function Home() {
   const router = useRouter();
